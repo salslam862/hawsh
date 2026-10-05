@@ -76,3 +76,4 @@ table{background:#fffdf8}
 .hero{background:linear-gradient(135deg,#2b424a,#3e6872)}
 .footer{color:#756f67}
 @media(max-width:760px){.history-bar{padding:0 10px}.history-bar .btn{flex:1;min-height:42px}.container{padding-top:14px}}
+.audit-details{display:grid;gap:3px;line-height:1.55;white-space:normal}.audit-details b{font-weight:700}.tablewrap .audit-details{min-width:220px}.field-section .audit-item span{color:var(--muted)}
