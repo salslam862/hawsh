@@ -8,3 +8,7 @@ test('rented hidden',()=>assert.equal(deriveVisibility('RENT','RENTED','AUTO'),f
 test('exited hidden',()=>assert.equal(deriveVisibility('SALE','EXITED','AUTO'),false));
 test('manual hide',()=>assert.equal(deriveVisibility('SALE','ACTIVE','HIDE'),false));
 test('manual show cannot override exited',()=>assert.equal(deriveVisibility('SALE','EXITED','SHOW'),false));
+
+test('reserved sale hidden',()=>assert.equal(deriveVisibility('SALE','RESERVED','AUTO'),false));
+test('reserved rent hidden',()=>assert.equal(deriveVisibility('RENT','RESERVED','AUTO'),false));
+test('manual show cannot override reserved',()=>assert.equal(deriveVisibility('SALE','RESERVED','SHOW'),false));
