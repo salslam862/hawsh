@@ -55,3 +55,6 @@ button,input,select,textarea{font:inherit;}
   .category-grid{gap:8px;}
   .footer{flex-direction:column;}
 }
+
+/* Admin mobile stability v2.6.6 */
+.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding-bottom:4px}.tabs .btn{flex:0 0 auto}.tablewrap{max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}.tablewrap table{min-width:max-content}.modal .toolbar{align-items:stretch}@media(max-width:760px){.modal .two,.modal .three{grid-template-columns:1fr}.modal .toolbar{grid-template-columns:1fr}.modal .toolbar .btn{width:100%;min-height:44px}.page-head{align-items:stretch;flex-direction:column}.page-head .btn{width:100%}.tabs{margin-right:-2px;margin-left:-2px}.tabs .btn{white-space:nowrap}.panel{max-width:100%;overflow-x:hidden}}
