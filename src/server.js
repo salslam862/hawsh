@@ -57,7 +57,7 @@ function ensureCategoryFields(){for(const c of db.categories){if((!Array.isArray
 ensureCategoryFields();
 save(db);
 const mime={'.html':'text/html;charset=utf-8','.js':'text/javascript;charset=utf-8','.css':'text/css;charset=utf-8','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml'};
-function send(res,status,data,type='json'){res.statusCode=status;res.setHeader('Content-Type',type);res.end(type==='json'?JSON.stringify(data):data)}
+function send(res,status,data,type='json'){res.statusCode=status;res.setHeader('Content-Type',type);res.setHeader('Permissions-Policy','web-share=(self)');res.end(type==='json'?JSON.stringify(data):data)}
 function cookie(res,name,value,maxAge=604800){res.setHeader('Set-Cookie',`${name}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${process.env.NODE_ENV==='production'?'; Secure':''}`)}
 function clearCookie(res,name){cookie(res,name,'',0)}
 async function body(req){return await new Promise((resolve,reject)=>{let s='';req.on('data',c=>{s+=c;if(s.length>12e6)req.destroy()});req.on('end',()=>{try{resolve(s?JSON.parse(s):{})}catch{resolve({})}});req.on('error',reject)})}
