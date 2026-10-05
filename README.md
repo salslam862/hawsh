@@ -53,7 +53,7 @@ npm test
 قاعدة البيانات في هذه النسخة JSON لتسهيل التشغيل المباشر. للاستخدام التجاري واسع النطاق يوصى بالترقية إلى PostgreSQL وتخزين الصور في Object Storage.
 
 
-## v2.3.0
+## v2.3.1
 
 - واجهة إضافة أصل جديدة تعتمد على اختيار الغرض أولًا: للبيع، للإيجار، للتوقيف، أو للبيع والإيجار.
 - حقول الأصل ديناميكية حسب التصنيف، مع حفظ `customFields` دون التأثير على الحقول الأساسية القديمة.
@@ -74,3 +74,9 @@ npm test
 - إتمام حجز البيع يحول الأصل إلى `SOLD`، وإتمام حجز الإيجار يحوله إلى `RENTED` ويغلق الخروج.
 - الزائر يستطيع طلب حجز لعروض البيع والإيجار دون إنشاء حساب.
 - رقم واتساب أصبح يعتمد على مفتاح الدولة القابل للإعداد بدل تثبيت السعودية.
+
+## v2.3.1
+- Admin-managed vehicle types with safe delete/disable behavior.
+- Automatic asset codes and generated vehicle titles.
+- Optional yard location.
+- Dynamic pricing fields and server-side purpose sanitization.

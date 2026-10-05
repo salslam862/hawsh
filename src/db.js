@@ -1,6 +1,6 @@
 import fs from 'fs'; import path from 'path'; import crypto from 'crypto';
 const root=path.resolve(process.cwd()); const dataDir=process.env.DATA_DIR||path.join(root,'data'); const file=path.join(dataDir,'db.json'); fs.mkdirSync(dataDir,{recursive:true});
-const base={users:[],yards:[],categories:[],assets:[],images:[],storageCharges:[],history:[],inquiries:[],messages:[],auditLogs:[],sessions:[],transactions:[],reservations:[],offers:[],expenses:[],notifications:[],contracts:[],settings:[],locations:[]};
+const base={users:[],yards:[],categories:[],vehicleTypes:[],assets:[],images:[],storageCharges:[],history:[],inquiries:[],messages:[],auditLogs:[],sessions:[],transactions:[],reservations:[],offers:[],expenses:[],notifications:[],contracts:[],settings:[],locations:[]};
 export function load(){if(!fs.existsSync(file)){fs.writeFileSync(file,JSON.stringify(base,null,2));return structuredClone(base)} try{return {...base,...JSON.parse(fs.readFileSync(file,'utf8'))}}catch{return structuredClone(base)}}
 export function save(db){const tmp=file+'.tmp';fs.writeFileSync(tmp,JSON.stringify(db,null,2));fs.renameSync(tmp,file)}
 export function id(prefix='id'){return `${prefix}_${crypto.randomUUID()}`}
