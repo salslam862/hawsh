@@ -1,6 +1,6 @@
 import {load,save,id,now,hashPassword} from './db.js';
 const db=load();
-for(const k of ['users','yards','categories','vehicleTypes','assets','images','storageCharges','history','inquiries','messages','auditLogs','sessions','transactions','reservations','offers','expenses','notifications','contracts','settings','locations','invoices','conditionReports']) db[k] ||= [];
+for(const k of ['users','owners','yards','categories','vehicleTypes','assets','images','storageCharges','history','inquiries','messages','auditLogs','sessions','transactions','reservations','offers','expenses','notifications','contracts','settings','locations','invoices','conditionReports']) db[k] ||= [];
 if(!db.users.some(u=>u.phone==='0500000000'))db.users.push({id:id('usr'),name:'مدير النظام',phone:'0500000000',passwordHash:hashPassword('Admin@12345'),role:'ADMIN',active:true,identityType:'NATIONAL_ID',identityNumber:'',createdAt:now()});
 if(!db.yards.some(y=>y.id==='demo-yard'))db.yards.push({id:'demo-yard',name:'الحوش الرئيسي',city:'الرياض',address:'المملكة العربية السعودية',active:true,createdAt:now()});
 const cats=[['سيارات ومركبات','vehicles','🚗',1,1,1],['دينات وقلابات','trucks','🚛',1,1,1],['رؤوس شاحنات','truck-heads','🚚',1,1,1],['سطحات','flatbeds','🛻',1,1,1],['وايتات وخزانات','water-tanks','💧',1,1,1],['صناديق','boxes','📦',1,1,1],['معدات ثقيلة','heavy-equipment','🚜',1,1,1],['شيولات','loaders','🏗️',1,1,1],['محركات ومكاين','engines','⚙️',1,1,1],['قطع غيار','spare-parts','🔧',1,0,1],['كفرات مستعملة','used-tires','🛞',1,0,1],['جنوط','rims','⭕',1,0,1]];
