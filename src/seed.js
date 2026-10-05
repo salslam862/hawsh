@@ -1,0 +1,11 @@
+import {load,save,id,now,hashPassword} from './db.js';
+const db=load();
+for(const k of ['users','yards','categories','assets','images','storageCharges','history','inquiries','messages','auditLogs','sessions','transactions','reservations','offers','expenses','notifications','contracts','settings','locations','invoices','conditionReports']) db[k] ||= [];
+if(!db.users.some(u=>u.phone==='0500000000'))db.users.push({id:id('usr'),name:'مدير النظام',phone:'0500000000',passwordHash:hashPassword('Admin@12345'),role:'ADMIN',active:true,identityType:'NATIONAL_ID',identityNumber:'',createdAt:now()});
+if(!db.yards.some(y=>y.id==='demo-yard'))db.yards.push({id:'demo-yard',name:'الحوش الرئيسي',city:'الرياض',address:'المملكة العربية السعودية',active:true,createdAt:now()});
+const cats=[['سيارات ومركبات','vehicles','🚗',1,1,1],['دينات وقلابات','trucks','🚛',1,1,1],['رؤوس شاحنات','truck-heads','🚚',1,1,1],['سطحات','flatbeds','🛻',1,1,1],['وايتات وخزانات','water-tanks','💧',1,1,1],['صناديق','boxes','📦',1,1,1],['معدات ثقيلة','heavy-equipment','🚜',1,1,1],['شيولات','loaders','🏗️',1,1,1],['محركات ومكاين','engines','⚙️',1,1,1],['قطع غيار','spare-parts','🔧',1,0,1],['كفرات مستعملة','used-tires','🛞',1,0,1],['جنوط','rims','⭕',1,0,1]];
+for(const [name,slug,icon,allowSale,allowRent,allowStorage] of cats){if(!db.categories.some(c=>c.slug===slug))db.categories.push({id:id('cat'),name,slug,icon,description:'',active:true,sortOrder:db.categories.length,allowSale:!!allowSale,allowRent:!!allowRent,allowStorage:!!allowStorage,fields:[]})}
+const defaults={name:'حوشك',tagline:'منصة إدارة وعرض ووساطة المركبات والمعدات والأصول',country:'السعودية',city:'الرياض',whatsapp:'0500000000',phone:'',email:'',address:'الرياض - المملكة العربية السعودية',currency:'SAR',timezone:'Asia/Riyadh',language:'ar',storageDefaultRate:'15'};
+for(const [key,value] of Object.entries(defaults)){if(!db.settings.some(s=>s.key===key))db.settings.push({id:id('set'),key,value})}
+for(const [code,name] of [['A-01','الموقف A-01'],['A-02','الموقف A-02'],['B-01','الموقف B-01']])if(!db.locations.some(l=>l.code===code))db.locations.push({id:id('loc'),yardId:'demo-yard',name,code,zone:code[0],active:true,createdAt:now()});
+save(db);console.log('Seed complete. Admin: 0500000000 / Admin@12345');

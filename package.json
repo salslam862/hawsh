@@ -1,0 +1,16 @@
+{
+  "name": "houshak-platform",
+  "version": "2.1.0",
+  "private": true,
+  "description": "حوشك - منصة إدارة ساحات ووساطة المركبات والمعدات والأصول",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "test": "node --test test/*.test.js",
+    "seed": "node src/seed.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
