@@ -28,7 +28,7 @@ const categoryFieldDefaults={
     {key:'vehicleType',label:'نوع المركبة',type:'select',options:['سيدان','دفع رباعي','باص','بيك أب','فان','حافلة','أخرى']},
     {key:'make',label:'الماركة',type:'text'},
     {key:'model',label:'الموديل',type:'text'},
-    
+    {key:'year',label:'سنة الصنع',type:'number'},
     {key:'color',label:'اللون',type:'text'},
     {key:'plateNumber',label:'رقم اللوحة',type:'text'},
     {key:'variant',label:'الفئة / المواصفة',type:'text'}
@@ -37,23 +37,23 @@ const categoryFieldDefaults={
     {key:'truckType',label:'نوع الدينة / القلاب',type:'select',options:['دينة','قلاب','دينا ثلاجة','أخرى']},
     {key:'make',label:'الماركة',type:'text'},
     {key:'model',label:'الموديل',type:'text'},
-    
+    {key:'year',label:'سنة الصنع',type:'number'},
     {key:'color',label:'اللون',type:'text'},
     {key:'plateNumber',label:'رقم اللوحة',type:'text'},
     {key:'variant',label:'الحمولة / المواصفة',type:'text'}
   ],
-  'truck-heads':[{key:'headType',label:'نوع الرأس',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'color',label:'اللون',type:'text'},{key:'plateNumber',label:'رقم اللوحة',type:'text'}],
-  flatbeds:[{key:'flatbedType',label:'نوع السطحة',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'plateNumber',label:'رقم اللوحة',type:'text'},{key:'variant',label:'المقاس / المواصفة',type:'text'}],
-  'water-tanks':[{key:'tankType',label:'نوع الوايت / الخزان',type:'text'},{key:'capacity',label:'السعة',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'plateNumber',label:'رقم اللوحة',type:'text'}],
+  'truck-heads':[{key:'headType',label:'نوع الرأس',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'year',label:'سنة الصنع',type:'number'},{key:'color',label:'اللون',type:'text'},{key:'plateNumber',label:'رقم اللوحة',type:'text'}],
+  flatbeds:[{key:'flatbedType',label:'نوع السطحة',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'year',label:'سنة الصنع',type:'number'},{key:'plateNumber',label:'رقم اللوحة',type:'text'},{key:'variant',label:'المقاس / المواصفة',type:'text'}],
+  'water-tanks':[{key:'tankType',label:'نوع الوايت / الخزان',type:'text'},{key:'capacity',label:'السعة',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'year',label:'سنة الصنع',type:'number'},{key:'plateNumber',label:'رقم اللوحة',type:'text'}],
   boxes:[{key:'boxType',label:'نوع الصندوق',type:'text'},{key:'dimensions',label:'الأبعاد',type:'text'},{key:'material',label:'الخامة',type:'text'},{key:'condition',label:'الحالة',type:'text'}],
-  'heavy-equipment':[{key:'equipmentType',label:'نوع المعدة',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'hours',label:'ساعات التشغيل',type:'number'},{key:'serialNumber',label:'الرقم التسلسلي',type:'text'}],
-  loaders:[{key:'loaderType',label:'نوع الشيول',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'hours',label:'ساعات التشغيل',type:'number'},{key:'serialNumber',label:'الرقم التسلسلي',type:'text'}],
-  engines:[{key:'engineType',label:'نوع المحرك / الماكينة',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'serialNumber',label:'الرقم التسلسلي',type:'text'},{key:'condition',label:'الحالة',type:'text'}],
+  'heavy-equipment':[{key:'equipmentType',label:'نوع المعدة',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'year',label:'سنة الصنع',type:'number'},{key:'hours',label:'ساعات التشغيل',type:'number'},{key:'serialNumber',label:'الرقم التسلسلي',type:'text'}],
+  loaders:[{key:'loaderType',label:'نوع الشيول',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'year',label:'سنة الصنع',type:'number'},{key:'hours',label:'ساعات التشغيل',type:'number'},{key:'serialNumber',label:'الرقم التسلسلي',type:'text'}],
+  engines:[{key:'engineType',label:'نوع المحرك / الماكينة',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'model',label:'الموديل',type:'text'},{key:'year',label:'سنة الصنع',type:'number'},{key:'serialNumber',label:'الرقم التسلسلي',type:'text'},{key:'condition',label:'الحالة',type:'text'}],
   'spare-parts':[{key:'partType',label:'نوع قطعة الغيار',type:'text'},{key:'make',label:'الماركة',type:'text'},{key:'partNumber',label:'رقم القطعة',type:'text'},{key:'condition',label:'الحالة',type:'select',options:['جديد','مستعمل','مجدد']}],
   'used-tires':[{key:'tireSize',label:'مقاس الكفر',type:'text'},{key:'brand',label:'الماركة',type:'text'},{key:'quantity',label:'العدد',type:'number'},{key:'condition',label:'الحالة',type:'text'}],
   rims:[{key:'rimSize',label:'مقاس الجنط',type:'text'},{key:'rimType',label:'نوع الجنط',type:'text'},{key:'brand',label:'الماركة',type:'text'},{key:'quantity',label:'العدد',type:'number'},{key:'condition',label:'الحالة',type:'text'}]
 };
-function ensureCategoryFields(){for(const c of db.categories){if((!Array.isArray(c.fields)||!c.fields.length)&&categoryFieldDefaults[c.slug])c.fields=categoryFieldDefaults[c.slug].map(x=>({...x}));else if(!Array.isArray(c.fields))c.fields=[];c.fields=c.fields.filter(f=>f.key!=='year');}}
+function ensureCategoryFields(){for(const c of db.categories){if((!Array.isArray(c.fields)||!c.fields.length)&&categoryFieldDefaults[c.slug])c.fields=categoryFieldDefaults[c.slug].map(x=>({...x}));else if(!Array.isArray(c.fields))c.fields=[];}}
 ensureCategoryFields();
 save(db);
 const mime={'.html':'text/html;charset=utf-8','.js':'text/javascript;charset=utf-8','.css':'text/css;charset=utf-8','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml'};
