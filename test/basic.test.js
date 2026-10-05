@@ -12,3 +12,6 @@ test('manual show cannot override exited',()=>assert.equal(deriveVisibility('SAL
 test('reserved sale hidden',()=>assert.equal(deriveVisibility('SALE','RESERVED','AUTO'),false));
 test('reserved rent hidden',()=>assert.equal(deriveVisibility('RENT','RESERVED','AUTO'),false));
 test('manual show cannot override reserved',()=>assert.equal(deriveVisibility('SALE','RESERVED','SHOW'),false));
+import {categoryFieldDefaults} from '../src/server.js';
+test('vehicle category has dynamic fields',()=>assert.ok(categoryFieldDefaults.vehicles.some(f=>f.key==='vehicleType')));
+test('heavy equipment has equipment type field',()=>assert.ok(categoryFieldDefaults['heavy-equipment'].some(f=>f.key==='equipmentType')));
