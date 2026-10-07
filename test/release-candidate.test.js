@@ -16,7 +16,8 @@ test('admin exposes customer preview and preview hides admin controls',()=>{
   const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
   assert.match(app,/معاينة كعميل/);
   assert.match(app,/customerPreview\(\)/);
-  assert.match(app,/state\.me&&!state\.customerPreview/);
+  assert.doesNotMatch(app,/state\.me&&!state\.customerPreview\?`<button class=\"btn\" onclick=\"dashboard\(\)\">فتح لوحة الإدارة/);
+  assert.match(app,/تصفح المعروض/);
 });
 
 test('customer location settings and secure admin logout are wired',()=>{
