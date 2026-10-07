@@ -69,9 +69,9 @@ test('admin home resets navigation history and keeps exit guard below it', async
   const fs = await import('node:fs/promises');
   const app = await fs.readFile(new URL('../public/app.js', import.meta.url), 'utf8');
   assert.match(app, /button onclick=\"adminHome\(\)\">الرئيسية/);
-  assert.match(app, /function adminHome\(\)\{history\.replaceState\(\{view:'exit-guard',admin:true\}/);
+  assert.match(app, /function adminHome\(\)\{window\.__adminHomeBoundary=true;history\.pushState\(\{view:'admin-home'\}/);
   assert.match(app, /history\.pushState\(\{view:'admin-home'\}/);
   assert.match(app, /return dashboard\('overview',true\)/);
   const sw = await fs.readFile(new URL('../public/sw-admin-v3.js', import.meta.url), 'utf8');
-  assert.match(sw, /houshak-admin-v6/);
+  assert.match(sw, /houshak-admin-v7/);
 });
