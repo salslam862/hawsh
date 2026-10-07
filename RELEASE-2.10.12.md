@@ -1,4 +1,4 @@
-# Houshak 2.10.13 — QR privacy + receipt flow fix
+# Houshak 2.10.12 — QR privacy + receipt flow fix
 
 - QR/public asset flow keeps the public page sanitized: internal asset UUID is no longer exposed; QR uses the opaque public token.
 - Admin lookup still supports the human asset/receipt numbers (`AST-...` / `REC-...`) for authorized staff.

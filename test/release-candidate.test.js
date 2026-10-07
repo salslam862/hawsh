@@ -52,6 +52,9 @@ test('offline-first asset intake is wired',()=>{
   assert.match(app,/houshakOfflineQueueV1/);
   assert.match(app,/تم حفظ الأصل على الجهاز مؤقتًا/);
   assert.match(app,/flushOfflineQueue/);
+  assert.match(app,/indexedDB/);
+  assert.match(app,/بدون إنترنت: أدخل اسم المالك ورقم الهاتف ورقم الهوية قبل الحفظ/);
+  assert.match(app,/تم حفظ الصور أيضًا وستُرفع تلقائيًا/);
   assert.match(app,/سيتم إرسال البيانات تلقائيًا عند عودة الاتصال/);
-  assert.match(sw,/houshak-admin-v4/);
+  assert.match(sw,/houshak-admin-v5/);
 });

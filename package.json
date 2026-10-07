@@ -1,6 +1,6 @@
 {
   "name": "houshak-platform",
-  "version": "2.10.14",
+  "version": "2.10.15",
   "private": true,
   "description": "حوشك - منصة إدارة ساحات ووساطة المركبات والمعدات والأصول",
   "type": "module",
