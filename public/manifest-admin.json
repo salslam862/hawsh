@@ -1,4 +1,5 @@
 {
+  "id": "/admin/",
   "name": "حوشك إدارة",
   "short_name": "حوشك إدارة",
   "description": "لوحة إدارة منصة حوشك للأصول والحجوزات والمالية والتشغيل",
@@ -7,6 +8,8 @@
   "start_url": "/admin/",
   "scope": "/admin/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "prefer_related_applications": false,
   "orientation": "portrait-primary",
   "background_color": "#f8fafc",
   "theme_color": "#0f172a",

@@ -1,4 +1,5 @@
 {
+  "id": "/",
   "name": "حوشك",
   "short_name": "حوشك",
   "description": "منصة حوشك لعرض وطلب واستئجار وبيع المركبات والمعدات والأصول",
@@ -7,6 +8,8 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "prefer_related_applications": false,
   "orientation": "portrait-primary",
   "background_color": "#f8fafc",
   "theme_color": "#0f172a",
