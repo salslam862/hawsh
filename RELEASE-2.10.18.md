@@ -1,8 +1,10 @@
 # Houshak v2.10.18
 
-Built strictly from v2.10.17.
-
-- App install names: `حوش أبو مناحي` (customer) and `إدارة حوش أبو مناحي` (admin).
-- Platform identity remains `حوشك`; yard identity is configurable in system settings.
-- Bumped service workers to v5 and cache names to force installed PWAs to refresh from v2.10.17 assets.
-- Kept admin/customer routing and authentication unchanged; no functional rebuild.
+## الهوية المثبتة للتطبيق
+- تطبيق العميل عند التثبيت يظهر باسم: **حوش أبو مناحي**.
+- تطبيق الإدارة عند التثبيت يظهر باسم: **إدارة حوش أبو مناحي**.
+- اسم المنصة داخل النظام يبقى **حوشك**، مع ارتباط واضح باسم الحوش الفعلي **حوش أبو مناحي**.
+- تم تحديث عناوين PWA وApple Mobile Web App.
+- تم تحديث رسالة التثبيت داخل التطبيق.
+- تم رفع إصدارات Service Worker إلى v5 حتى لا تبقى أسماء التطبيقات القديمة في الكاش.
+- لا تغيير في وظائف الأصول أو الحجوزات أو المالية أو الـOffline-first.
