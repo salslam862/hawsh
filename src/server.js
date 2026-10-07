@@ -14,7 +14,7 @@ const collections = ['users','owners','yards','categories','assets','images','st
 for (const k of collections) db[k] ||= [];
 const port = Number(process.env.PORT || 3000);
 const roles = ['ADMIN','MANAGER','RECEPTION','SALES','YARD','ACCOUNTING','CUSTOMER'];
-const identityTypes = ['NATIONAL_ID','RESIDENCY_ID','PASSPORT','OTHER'];
+const identityTypes = ['NATIONAL_ID','PERSONAL_ID','RESIDENCY_ID','PASSPORT','OTHER'];
 const currencies = [
   {code:'SAR',name:'الريال السعودي',symbol:'ر.س',locale:'ar-SA'},
   {code:'YER',name:'الريال اليمني',symbol:'ر.ي',locale:'ar-YE'},
@@ -203,9 +203,9 @@ const payRm=p.match(/^\/api\/admin\/assets\/([^/]+)\/receipts\/payment$/);if(pay
  const im=p.match(/^\/api\/admin\/inquiries\/([^/]+)\/messages$/);if(im&&method==='POST'){const u=requireRole(req,res);if(!u)return;const i=db.inquiries.find(x=>x.id===im[1]);if(!i)return send(res,404,{error:'الاستفسار غير موجود'});const b=await body(req);const m={id:id('msg'),inquiryId:i.id,senderId:u.id,body:b.body||'',createdAt:now()};db.messages.push(m);i.status='IN_PROGRESS';i.updatedAt=now();save(db);return send(res,201,m)}
  if(p==='/api/admin/reports/summary'&&method==='GET'){const u=requireRole(req,res,['ADMIN','MANAGER','ACCOUNTING']);if(!u)return;const days=Math.max(1,Number(url.searchParams.get('days')||30)),since=Date.now()-days*86400000;const income=db.transactions.filter(x=>x.type==='INCOME'&&new Date(x.createdAt).getTime()>=since).reduce((s,x)=>s+Number(x.amount||0),0);const expense=db.transactions.filter(x=>x.type==='EXPENSE'&&new Date(x.createdAt).getTime()>=since).reduce((s,x)=>s+Number(x.amount||0),0);const byCat={};for(const a of db.assets.filter(x=>new Date(x.createdAt).getTime()>=since)){const c=category(a.categoryId)?.name||'أخرى';byCat[c]=(byCat[c]||0)+1}return send(res,200,{days,currency:systemSettings().currency,income,expense,net:income-expense,assetsAdded:db.assets.filter(x=>new Date(x.createdAt).getTime()>=since).length,exits:db.assets.filter(x=>x.status==='EXITED'&&new Date(x.exitAt||0).getTime()>=since).length,byCategory:byCat,storageOutstanding:db.storageCharges.reduce((s,c)=>s+Math.max(0,Number(c.balance||0)),0),invoiceOutstanding:db.invoices.reduce((s,i)=>s+Math.max(0,Number(i.balance||0)),0)})}
  if(p==='/api/admin/audit'&&method==='GET'){const u=requireRole(req,res,['ADMIN','MANAGER']);if(!u)return;return send(res,200,db.auditLogs.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,1000).map(x=>({...x,actor:user(x.userId)?safeUser(user(x.userId)):null})))}
- if(p==='/api/admin/export'&&method==='GET'){const u=requireRole(req,res,['ADMIN','MANAGER']);if(!u)return;return send(res,200,{exportedAt:now(),version:'2.10.18',data:db})}
+ if(p==='/api/admin/export'&&method==='GET'){const u=requireRole(req,res,['ADMIN','MANAGER']);if(!u)return;return send(res,200,{exportedAt:now(),version:'2.10.17',data:db})}
  if(p.startsWith('/uploads/')){const f=path.basename(p.slice('/uploads/'.length));const fp=path.join(uploadDir,f);if(fs.existsSync(fp))return send(res,200,fs.readFileSync(fp),mime[path.extname(fp).toLowerCase()]||'application/octet-stream');return send(res,404,{error:'غير موجود'})}
  if(p==='/admin'||p==='/admin/')return send(res,200,fs.readFileSync(path.join(publicDir,'admin.html')),mime['.html']);if(p.startsWith('/asset/'))return send(res,200,fs.readFileSync(path.join(publicDir,'asset.html')),mime['.html']);const fp=path.join(publicDir,p==='/'?'index.html':p.replace(/^\//,''));if(fs.existsSync(fp)&&fs.statSync(fp).isFile())return send(res,200,fs.readFileSync(fp),mime[path.extname(fp).toLowerCase()]||'application/octet-stream');return send(res,404,{error:'الصفحة غير موجودة'});
 }
 const server=http.createServer((req,res)=>route(req,res).catch(e=>{console.error(e);send(res,500,{error:'حدث خطأ داخلي'})}));
-if(process.argv[1]===fileURLToPath(import.meta.url))server.listen(port,()=>console.log(`Houshak v2.10.18 running on http://localhost:${port}`));
+if(process.argv[1]===fileURLToPath(import.meta.url))server.listen(port,()=>console.log(`Houshak v2.10.17 running on http://localhost:${port}`));
