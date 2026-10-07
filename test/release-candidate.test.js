@@ -41,3 +41,17 @@ test('current bid is optional, separate from asking price, and public-facing',()
   assert.match(app,/سعر البيع المطلوب/);
   assert.match(app,/currentBid:\$\('#acb'\)\?\.value\|\|null/);
 });
+
+
+test('offline-first asset intake is wired',()=>{
+  const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+  const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+  const sw=readFileSync(new URL('../public/sw-admin-v3.js',import.meta.url),'utf8');
+  assert.match(server,/\/api\/admin\/offline-sync/);
+  assert.match(server,/clientRequestId/);
+  assert.match(app,/houshakOfflineQueueV1/);
+  assert.match(app,/تم حفظ الأصل على الجهاز مؤقتًا/);
+  assert.match(app,/flushOfflineQueue/);
+  assert.match(app,/سيتم إرسال البيانات تلقائيًا عند عودة الاتصال/);
+  assert.match(sw,/houshak-admin-v4/);
+});
