@@ -1,33 +1,20 @@
 {
   "id": "/admin/",
-  "name": "إدارة حوش أبو مناحي",
-  "short_name": "إدارة حوش أبو مناحي",
-  "description": "إدارة حوش أبو مناحي عبر منصة حوشك للأصول والحجوزات والمالية والتشغيل",
+  "name": "حوشك إدارة",
+  "short_name": "حوشك إدارة",
+  "description": "لوحة إدارة منصة حوشك للأصول والحجوزات والمالية والتشغيل",
   "lang": "ar",
   "dir": "rtl",
   "start_url": "/admin/",
   "scope": "/admin/",
   "display": "standalone",
-  "display_override": [
-    "window-controls-overlay",
-    "standalone"
-  ],
+  "display_override": ["window-controls-overlay", "standalone"],
   "prefer_related_applications": false,
   "orientation": "portrait-primary",
   "background_color": "#f8fafc",
   "theme_color": "#0f172a",
   "icons": [
-    {
-      "src": "/icons/houshak-admin-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/houshak-admin-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    {"src":"/icons/houshak-admin-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"/icons/houshak-admin-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ]
 }
