@@ -86,6 +86,11 @@ th{background:#f5f7f8;color:#344454;font-weight:800}tr:hover td{background:#fafc
 .footer{padding:24px 18px;color:#7b756d}
 @media(max-width:760px){.nav{padding:12px 10px}.navlinks{gap:6px}.hero{padding:22px 16px}.panel{box-shadow:0 6px 18px rgba(24,59,86,.06)}}
 
+/* Client home hero contrast only — v2.10.24 */
+.client-home-hero{background:linear-gradient(135deg,#183b56 0%,#2d617f 100%);border-color:#183b56;color:#fff;box-shadow:0 12px 30px rgba(24,59,86,.16)}
+.client-home-hero h1,.client-home-hero p{color:#fff}
+.client-home-hero:after{background:rgba(181,138,59,.12)}
+
 /* Admin/Public separation v2.10.0 */
 .admin-mode{background:linear-gradient(180deg,#f4f7f9 0%,#eef2f5 100%)}.admin-top{box-shadow:0 8px 26px rgba(24,59,86,.20)}.admin-login-wrap{min-height:calc(100vh - 90px);display:grid;place-items:center;padding:24px}.admin-login{width:min(440px,100%);text-align:center}.admin-login-brand{font-size:25px;font-weight:900;color:var(--primary);margin-bottom:8px}.admin-login .btn{width:100%;margin-top:10px;min-height:46px}.admin-login .field{text-align:right}.admin-mode #app>.container{padding-top:18px}.admin-mode .tabs{border-bottom:1px solid var(--border);padding-bottom:8px}.admin-mode .tabs .btn{border-radius:9px}
 
