@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#0f172a"/><path d="M70 252 256 88l186 164v174H70z" fill="#d4a84f"/><path d="M110 270h292v126H110z" fill="#1e293b"/><path d="M142 396V286h72v110zm156 0V286h72v110z" fill="#f8fafc"/><path d="M157 346h198" stroke="#d4a84f" stroke-width="24" stroke-linecap="round"/><circle cx="256" cy="226" r="62" fill="#f8fafc"/><path d="M256 178v96m-48-48h96" stroke="#0f172a" stroke-width="18" stroke-linecap="round"/><path d="M404 132a48 48 0 1 1-30-22" fill="none" stroke="#f1c76b" stroke-width="18" stroke-linecap="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071a33"/><stop offset="1" stop-color="#29415b"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7d77f"/><stop offset="1" stop-color="#b98222"/></linearGradient></defs>
+<rect width="512" height="512" rx="112" fill="url(#bg)"/>
+<!-- yard -->
+<path d="M64 238 256 105l192 133" fill="none" stroke="url(#gold)" stroke-width="18" stroke-linejoin="round"/>
+<path d="M92 242h328v184H92z" fill="#0d2948" stroke="#d8aa4b" stroke-width="10"/>
+<path d="M125 242v-37M169 242v-67M213 242v-98M299 242v-98M343 242v-67M387 242v-37" stroke="#d8aa4b" stroke-width="9"/>
+<!-- dashboard/management board -->
+<rect x="156" y="278" width="200" height="122" rx="16" fill="#f7d77f"/>
+<rect x="174" y="296" width="164" height="86" rx="9" fill="#102d4c"/>
+<path d="M195 356v-30M230 356v-47M265 356v-22M300 356v-58" stroke="#f7d77f" stroke-width="12" stroke-linecap="round"/>
+<!-- gear -->
+<g transform="translate(365 365)"><circle r="48" fill="#102d4c" stroke="#f7d77f" stroke-width="10"/><circle r="16" fill="#f7d77f"/><path d="M0-66v18M0 48v18M-66 0h18M48 0h18M-47-47l13 13M34 34l13 13M-47 47l13-13M34-34l13-13" stroke="#f7d77f" stroke-width="14" stroke-linecap="round"/></g>
+</svg>

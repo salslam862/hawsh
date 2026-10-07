@@ -1,1 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#0f172a"/><path d="M72 260h368v174H72z" fill="#d4a84f"/><path d="M72 260 256 92l184 168" fill="#f1c76b"/><path d="M104 274h304v128H104z" fill="#fff"/><path d="M118 378h276V246H118z" fill="#1e293b"/><path d="M148 360V286h82v74zm134 0V286h82v74z" fill="#f8fafc"/><path d="M166 338h180l-25-48h-130z" fill="#d4a84f"/><circle cx="205" cy="346" r="18" fill="#0f172a"/><circle cx="307" cy="346" r="18" fill="#0f172a"/><path d="M96 430h320" stroke="#f1c76b" stroke-width="18" stroke-linecap="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071a33"/><stop offset="1" stop-color="#173b63"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f5d37a"/><stop offset="1" stop-color="#b98222"/></linearGradient></defs>
+<rect width="512" height="512" rx="112" fill="url(#bg)"/>
+<path d="M78 260h356v154H78z" fill="#0b2746" stroke="#d8aa4b" stroke-width="10"/>
+<path d="M60 260 256 118l196 142" fill="none" stroke="url(#gold)" stroke-width="18" stroke-linejoin="round"/>
+<path d="M108 260v-42M156 260v-75M204 260v-109M308 260v-109M356 260v-75M404 260v-42" stroke="#d8aa4b" stroke-width="10"/>
+<path d="M142 349h228" stroke="#d8aa4b" stroke-width="8" stroke-linecap="round"/>
+<!-- heavy equipment silhouette -->
+<path d="M145 335h92l19-49h63l35 49h18v35H139v-35z" fill="#f0c85e"/>
+<path d="M252 286h67l25 49h-111z" fill="#183653"/>
+<circle cx="185" cy="374" r="25" fill="#071a33" stroke="#f0c85e" stroke-width="9"/><circle cx="337" cy="374" r="25" fill="#071a33" stroke="#f0c85e" stroke-width="9"/>
+<path d="M112 404h288" stroke="#f0c85e" stroke-width="12" stroke-linecap="round"/>
+</svg>
