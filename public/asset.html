@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0f172a"><meta name="description" content="تفاصيل أصل معروض في حوشك">
-<title>تفاصيل الأصل — حوشك</title><link rel="stylesheet" href="/styles.css">
+<meta name="theme-color" content="#0f172a"><meta name="description" content="تفاصيل أصل معروض في حوش أبو مناحي">
+<title>تفاصيل الأصل — حوش أبو مناحي</title><link rel="stylesheet" href="/styles.css">
 <style>
 .asset-public{max-width:900px;margin:0 auto;padding:18px}.asset-public .brand{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px}.asset-public .brand h1{margin:0}.asset-public .private-note{padding:12px;border-radius:12px;background:#f1f5f9;margin:14px 0}.asset-public .specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.asset-public .spec{padding:12px;border:1px solid #e2e8f0;border-radius:12px}.asset-public .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}.asset-public .gallery img{width:100%;height:190px;object-fit:cover;border-radius:12px}.asset-public .price-box{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:16px 0}.asset-public .price-box>div{padding:16px;border-radius:14px;border:1px solid #e2e8f0}.asset-public .price{font-size:1.2rem;font-weight:700}.asset-public .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.asset-public .hidden-owner{display:none}
 </style>
@@ -40,15 +40,15 @@ async function load(){
   const gallery=(a.images||[]).map(i=>`<img src="${esc(i.url)}" alt="${esc(a.title)}">`).join('');
   document.title=`${a.title||'الأصل'} — حوشك`;
   document.getElementById('publicAssetApp').innerHTML=`
-   <div class="brand"><div><h1>${esc(a.systemName||'حوشك')}</h1><div class="muted">تفاصيل الأصل المعروض</div></div><span class="pill">${esc(purposeName(a.purpose))}</span></div>
+   <div class="brand"><div><h1>${esc(a.systemName||'حوش أبو مناحي')}</h1><div class="muted">تفاصيل الأصل المعروض</div></div><span class="pill">${esc(purposeName(a.purpose))}</span></div>
    <div class="panel"><h2>${esc(a.title||'أصل')}</h2><div class="private-note">هذه الصفحة تعرض معلومات الأصل المتاحة للعملاء فقط. بيانات المالك ووسائل التواصل معه خاصة وغير معروضة.</div>
    ${gallery?`<div class="gallery">${gallery}</div>`:''}
    <div class="price-box">${prices.join('')||'<div><small>السعر</small><div class="price">للاستفسار</div></div>'}</div>
    <div class="specs">${specs.map(([k,v])=>`<div class="spec"><small>${esc(k)}</small><br><strong>${esc(v)}</strong></div>`).join('')}</div>
    ${a.description?`<div class="field-section"><h3>الوصف</h3><p>${esc(a.description)}</p></div>`:''}
-   <div class="actions"><a class="btn success" target="_blank" rel="noopener" href="https://wa.me/${encodeURIComponent(String(a.systemWhatsapp||'').replace(/\D/g,''))}?text=${encodeURIComponent('استفسار عن الأصل '+a.code+' — '+a.title)}">واتساب الحوش</a><a class="btn primary" href="tel:${esc(a.systemPhone||'')}">اتصال بالحوش</a><a class="btn" href="/">العودة إلى حوشك</a></div>
+   <div class="actions"><a class="btn success" target="_blank" rel="noopener" href="https://wa.me/${encodeURIComponent(String(a.systemWhatsapp||'').replace(/\D/g,''))}?text=${encodeURIComponent('استفسار عن الأصل '+a.code+' — '+a.title)}">واتساب الحوش</a><a class="btn primary" href="tel:${esc(a.systemPhone||'')}">اتصال بالحوش</a><a class="btn" href="/">العودة إلى حوش أبو مناحي</a></div>
    </div>`;
- }catch(e){document.getElementById('publicAssetApp').innerHTML=`<div class="panel"><h2>الأصل غير متاح</h2><p>${esc(e.message)}</p><a class="btn primary" href="/">العودة إلى حوشك</a></div>`}
+ }catch(e){document.getElementById('publicAssetApp').innerHTML=`<div class="panel"><h2>الأصل غير متاح</h2><p>${esc(e.message)}</p><a class="btn primary" href="/">العودة إلى حوش أبو مناحي</a></div>`}
 }
 load();
 </script>

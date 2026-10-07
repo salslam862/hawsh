@@ -2,32 +2,19 @@
   "id": "/",
   "name": "حوش أبو مناحي",
   "short_name": "حوش أبو مناحي",
-  "description": "حوش أبو مناحي — يعمل عبر منصة حوشك لعرض وإدارة الأصول",
+  "description": "حوش أبو مناحي — يعمل بواسطة منصة حوشك",
   "lang": "ar",
   "dir": "rtl",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "display_override": [
-    "window-controls-overlay",
-    "standalone"
-  ],
+  "display_override": ["window-controls-overlay", "standalone"],
   "prefer_related_applications": false,
   "orientation": "portrait-primary",
   "background_color": "#f8fafc",
   "theme_color": "#0f172a",
   "icons": [
-    {
-      "src": "/icons/houshak-client-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/houshak-client-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    {"src":"/icons/houshak-client-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"/icons/houshak-client-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ]
 }
