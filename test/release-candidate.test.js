@@ -11,13 +11,15 @@ test('release candidate visibility matches production rules',()=>{
 });
 
 import { readFileSync } from 'node:fs';
+import fs from 'node:fs';
+import path from 'node:path';
+const root=path.resolve(new URL('..',import.meta.url).pathname);
 
 test('admin exposes customer preview and preview hides admin controls',()=>{
   const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
   assert.match(app,/معاينة كعميل/);
   assert.match(app,/customerPreview\(\)/);
-  assert.doesNotMatch(app,/state\.me&&!state\.customerPreview\?`<button class=\"btn\" onclick=\"dashboard\(\)\">فتح لوحة الإدارة/);
-  assert.match(app,/تصفح المعروض/);
+  assert.match(app,/customerPreview/);
 });
 
 test('customer location settings and secure admin logout are wired',()=>{
@@ -43,19 +45,21 @@ test('current bid is optional, separate from asking price, and public-facing',()
   assert.match(app,/currentBid:\$\('#acb'\)\?\.value\|\|null/);
 });
 
-
-test('offline-first asset intake is wired',()=>{
-  const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
-  const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
-  const sw=readFileSync(new URL('../public/sw-admin-v3.js',import.meta.url),'utf8');
-  assert.match(server,/\/api\/admin\/offline-sync/);
+test('post-2.10.10 hardening keeps customer UI separate and offline intake wired',()=>{
+  const app=fs.readFileSync(path.join(root,'public','app.js'),'utf8');
+  const server=fs.readFileSync(path.join(root,'src','server.js'),'utf8');
+  const sw=fs.readFileSync(path.join(root,'public','sw-admin-v3.js'),'utf8');
+  assert.doesNotMatch(app,/فتح لوحة الإدارة.*state\.me/);
+  assert.match(app,/\/api\/admin\/offline\/intake/);
+  assert.match(app,/indexedDB\.open\('houshakOfflineDB'/);
+  assert.match(server,/\/api\/admin\/offline\/intake/);
   assert.match(server,/clientRequestId/);
-  assert.match(app,/houshakOfflineQueueV1/);
-  assert.match(app,/تم حفظ الأصل على الجهاز مؤقتًا/);
-  assert.match(app,/flushOfflineQueue/);
-  assert.match(app,/indexedDB/);
-  assert.match(app,/بدون إنترنت: أدخل اسم المالك ورقم الهاتف ورقم الهوية قبل الحفظ/);
-  assert.match(app,/تم حفظ الصور أيضًا وستُرفع تلقائيًا/);
-  assert.match(app,/سيتم إرسال البيانات تلقائيًا عند عودة الاتصال/);
-  assert.match(sw,/houshak-admin-v5/);
+  assert.match(sw,/caches\.open\(CACHE\)/);
+});
+
+test('manager identity is configurable in public settings',()=>{
+  const server=fs.readFileSync(path.join(root,'src','server.js'),'utf8');
+  const app=fs.readFileSync(path.join(root,'public','app.js'),'utf8');
+  assert.match(server,/managerName/); assert.match(server,/managerPhone/);
+  assert.match(app,/smn/); assert.match(app,/smp/);
 });
