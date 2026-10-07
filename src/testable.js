@@ -1,1 +1,1 @@
-export function deriveVisibility(purpose,status,override='AUTO'){if(override==='HIDE') return false;if(override==='SHOW') return ['ACTIVE','RESERVED'].includes(status);return ['SALE','RENT','SALE_RENT'].includes(purpose)&&['ACTIVE','RESERVED'].includes(status);}
+export function deriveVisibility(purpose,status,override='AUTO'){if(override==='HIDE') return false;if(override==='SHOW') return status==='ACTIVE';return ['SALE','RENT','SALE_RENT'].includes(purpose)&&status==='ACTIVE';}

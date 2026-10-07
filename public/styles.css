@@ -59,21 +59,34 @@ button,input,select,textarea{font:inherit;}
 /* Admin mobile stability v2.6.6 */
 .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding-bottom:4px}.tabs .btn{flex:0 0 auto}.tablewrap{max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}.tablewrap table{min-width:max-content}.modal .toolbar{align-items:stretch}@media(max-width:760px){.modal .two,.modal .three{grid-template-columns:1fr}.modal .toolbar{grid-template-columns:1fr}.modal .toolbar .btn{width:100%;min-height:44px}.page-head{align-items:stretch;flex-direction:column}.page-head .btn{width:100%}.tabs{margin-right:-2px;margin-left:-2px}.tabs .btn{white-space:nowrap}.panel{max-width:100%;overflow-x:hidden}}
 
-/* Classic visual refresh + navigation v2.6.9 */
-body{background:radial-gradient(circle at top,#f8f5ef 0,#f1eee8 42%,#ece8e0 100%);}
-.top{background:linear-gradient(135deg,#283f48,#385d68);box-shadow:0 3px 14px rgba(35,45,48,.12)}
 .navlinks button{border-color:rgba(255,255,255,.22)}
-.history-bar{max-width:1200px;margin:10px auto 0;padding:0 16px;display:flex;gap:8px;justify-content:flex-start;direction:rtl}
-.history-bar .btn{background:#fffdf8;border-color:#d6cec2;box-shadow:0 2px 8px rgba(76,62,43,.06)}
-.panel,.card,.stat,.modal>div{background:rgba(255,253,248,.96);border-color:#ded7cc;box-shadow:var(--shadow)}
-.field-section,.new-owner-fields{background:#f7f3eb;border-color:#e0d8cb}
-.input,.select,textarea{background:#fffefa;border-color:#d6cec2}
-table{background:#fffdf8}
-.empty,.notice{background:#fffdf8;border-color:#d8d0c4}
-.category-tile,.purpose-card{background:#fffdf8;border-color:#ded7cc}
-.category-tile:hover{background:#f8f3ea}
-.purpose-card.selected{background:#eef3f2;border-color:var(--primary)}
-.hero{background:linear-gradient(135deg,#2b424a,#3e6872)}
 .footer{color:#756f67}
-@media(max-width:760px){.history-bar{padding:0 10px}.history-bar .btn{flex:1;min-height:42px}.container{padding-top:14px}}
 .audit-details{display:grid;gap:3px;line-height:1.55;white-space:normal}.audit-details b{font-weight:700}.tablewrap .audit-details{min-width:220px}.field-section .audit-item span{color:var(--muted)}
+
+
+/* Houshak premium visual system v2.8.0 — restrained, platform-style refresh */
+:root{--primary:#183b56;--primary-2:#2d617f;--accent:#b58a3b;--accent-soft:#f7f0e4;--ink:#18232d;--muted:#6b7280;--border:#dfe5ea;--bg:#f5f7f8;--panel:#ffffff;--success:#2f7d62;--danger:#b64a4a;--shadow:0 10px 28px rgba(24,59,86,.08)}
+body{background:linear-gradient(180deg,#f7f8f9 0%,#f2f4f5 100%);color:var(--ink);font-family:Tahoma,Arial,sans-serif}
+.top{background:linear-gradient(135deg,#183b56 0%,#214f6c 100%);box-shadow:0 6px 22px rgba(24,59,86,.16)}
+.nav{max-width:1180px;margin:auto;padding:15px 18px}
+.brand{font-weight:900;letter-spacing:-.3px}.nav small{opacity:.78}
+.navlinks button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);transition:.18s ease}.navlinks button:hover{background:rgba(255,255,255,.16);transform:translateY(-1px)}
+.hero{background:linear-gradient(135deg,#ffffff 0%,#f6f0e7 100%);border:1px solid #e7dfd2;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;inset:auto -60px -80px auto;width:220px;height:220px;border-radius:50%;background:rgba(181,138,59,.08)}
+.panel,.card,.category-tile,.purpose-card,.stat,.empty,.notice{box-shadow:var(--shadow);border-color:#e1e6ea}.panel{background:rgba(255,255,255,.96)}
+.btn{border:1px solid #d4dce2;background:#fff;color:var(--primary);font-weight:700;transition:.18s ease}.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(24,59,86,.08)}.btn.primary{background:linear-gradient(135deg,#183b56,#2d617f);border-color:#183b56;color:#fff}.btn.success{background:var(--success);color:#fff}.btn.danger{background:#fff;color:var(--danger);border-color:#e3b8b8}
+.input,.select,textarea.input{border:1px solid #d6dee4;background:#fff;border-radius:10px;min-height:44px;box-sizing:border-box;transition:.15s}.input:focus,.select:focus,textarea.input:focus{outline:none;border-color:#6b91a8;box-shadow:0 0 0 3px rgba(45,97,127,.10)}
+.field-section{background:#fbfcfc;border-color:#e1e6ea}.owner-section{background:#f8fafb;border-color:#d9e3e9}.selected-owner{background:#f4f8fa;border-color:#cadbe4}
+.purpose-card.selected{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 7px 18px rgba(181,138,59,.12)}
+.category-tile:hover,.market-card:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(24,59,86,.11)}
+.market-card .body{background:#fff}.price{color:var(--primary);font-weight:900}.offer-badge{background:var(--primary)}
+.tabs button.active{background:linear-gradient(135deg,#183b56,#2d617f);color:#fff}
+th{background:#f5f7f8;color:#344454;font-weight:800}tr:hover td{background:#fafcfd}
+.badge{background:#eef3f5;color:#38566a}.success{background:#eef7f2!important;color:#25664f}.danger{background:#fff1f1!important;color:#9d3e3e}
+.modal{background:rgba(20,31,40,.58);backdrop-filter:blur(2px)}.modal>div{border:1px solid #e0e6ea;box-shadow:0 22px 60px rgba(0,0,0,.18);border-radius:16px;background:#fff}
+.footer{padding:24px 18px;color:#7b756d}
+@media(max-width:760px){.nav{padding:12px 10px}.navlinks{gap:6px}.hero{padding:22px 16px}.panel{box-shadow:0 6px 18px rgba(24,59,86,.06)}}
+
+/* Admin/Public separation v2.10.0 */
+.admin-mode{background:linear-gradient(180deg,#f4f7f9 0%,#eef2f5 100%)}.admin-top{box-shadow:0 8px 26px rgba(24,59,86,.20)}.admin-login-wrap{min-height:calc(100vh - 90px);display:grid;place-items:center;padding:24px}.admin-login{width:min(440px,100%);text-align:center}.admin-login-brand{font-size:25px;font-weight:900;color:var(--primary);margin-bottom:8px}.admin-login .btn{width:100%;margin-top:10px;min-height:46px}.admin-login .field{text-align:right}.admin-mode #app>.container{padding-top:18px}.admin-mode .tabs{border-bottom:1px solid var(--border);padding-bottom:8px}.admin-mode .tabs .btn{border-radius:9px}
+
+.install-prompt{position:fixed;z-index:9999;right:16px;left:16px;bottom:16px;display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border:1px solid #e2e8f0;border-radius:18px;box-shadow:0 14px 38px rgba(15,23,42,.18);direction:rtl}.install-prompt>div{flex:1;display:flex;flex-direction:column;gap:4px}.install-prompt small{color:#64748b}.install-close{border:0;background:transparent;font-size:24px;cursor:pointer;color:#64748b;padding:4px 8px}@media(max-width:520px){.install-prompt{align-items:flex-start}.install-prompt .btn{white-space:nowrap}}

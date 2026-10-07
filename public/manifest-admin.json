@@ -1,0 +1,17 @@
+{
+  "name": "حوشك إدارة",
+  "short_name": "حوشك إدارة",
+  "description": "لوحة إدارة منصة حوشك للأصول والحجوزات والمالية والتشغيل",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/admin",
+  "scope": "/admin",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
+  "theme_color": "#0f172a",
+  "icons": [
+    {"src":"/icons/houshak-admin-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"/icons/houshak-admin-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
