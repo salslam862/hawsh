@@ -30,3 +30,14 @@ test('customer location settings and secure admin logout are wired',()=>{
   assert.match(app,/localStorage\.removeItem\('houshakAuth'\)/);
   assert.match(app,/الوصول إلى موقع الحوش/);
 });
+
+test('current bid is optional, separate from asking price, and public-facing',()=>{
+  const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+  const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+  assert.match(server,/currentBid/);
+  assert.match(server,/currentBidAt/);
+  assert.match(server,/قيمة السوم غير صحيحة/);
+  assert.match(app,/السوم الحالي/);
+  assert.match(app,/سعر البيع المطلوب/);
+  assert.match(app,/currentBid:\$\('#acb'\)\?\.value\|\|null/);
+});
