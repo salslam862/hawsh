@@ -18,3 +18,15 @@ test('admin exposes customer preview and preview hides admin controls',()=>{
   assert.match(app,/customerPreview\(\)/);
   assert.match(app,/state\.me&&!state\.customerPreview/);
 });
+
+test('customer location settings and secure admin logout are wired',()=>{
+  const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+  const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+  assert.match(server,/latitude:setting\('latitude'/);
+  assert.match(server,/longitude:setting\('longitude'/);
+  assert.match(server,/mapsUrl:setting\('mapsUrl'/);
+  assert.match(server,/'latitude','longitude','mapsUrl'/);
+  assert.match(app,/الخروج النهائي من التطبيق/);
+  assert.match(app,/localStorage\.removeItem\('houshakAuth'\)/);
+  assert.match(app,/الوصول إلى موقع الحوش/);
+});
