@@ -73,7 +73,7 @@ test('admin home resets navigation history and keeps exit guard below it', async
   assert.match(app, /history\.pushState\(\{view:'admin-home'\}/);
   assert.match(app, /return dashboard\('overview',true\)/);
   const sw = await fs.readFile(new URL('../public/sw-admin-v3.js', import.meta.url), 'utf8');
-  assert.match(sw, /houshak-admin-v8/);
+  assert.match(sw, /houshak-admin-v12/);
 });
 
 
@@ -85,5 +85,43 @@ test('customer preview provides direct return to admin without exit confirmation
   assert.match(app, /function returnToAdminPreview\(\).*location\.replace\('\/admin'\)/);
   assert.match(app, /if\(state\.customerPreview&&!location\.pathname\.startsWith\('\/admin'\)\)\{window\.__returningFromCustomerPreview=true;location\.replace\('\/admin'\);return\}/);
   const clientSw = await fs.readFile(new URL('../public/sw-client-v3.js', import.meta.url), 'utf8');
-  assert.match(clientSw, /houshak-client-v6/);
+  assert.match(clientSw, /houshak-client-v9/);
+});
+
+
+test('finance transaction supports a selectable historical date and customer gallery is compact and zoomable', async () => {
+  const fs = await import('node:fs/promises');
+  const app = await fs.readFile(new URL('../public/app.js', import.meta.url), 'utf8');
+  const server = await fs.readFile(new URL('../src/server.js', import.meta.url), 'utf8');
+  const css = await fs.readFile(new URL('../public/styles.css', import.meta.url), 'utf8');
+  assert.match(app, /id="fdate" class="input" type="datetime-local" value="\$\{defaultDate\}"/);
+  assert.match(app, /createdAt:createdAt\.toISOString\(\)/);
+  assert.match(server, /if\(b\.createdAt!==undefined&&b\.createdAt!==null&&b\.createdAt!==''\)/);
+  assert.match(app, /class="gallery-zoom"/);
+  assert.match(css, /gallery-zoom/);
+  assert.match(css, /grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+});
+
+
+test('settings save asks for confirmation and admin tabs preserve horizontal scroll', async () => {
+  const fs = await import('node:fs/promises');
+  const app = await fs.readFile(new URL('../public/app.js', import.meta.url), 'utf8');
+  assert.match(app, /async function saveSettings\(\)\{if\(!confirm\('هل أنت متأكد من حفظ التغييرات على إعدادات النظام ومحتوى المنصة؟'\)\)return;/);
+  assert.match(app, /const previousTabsScroll=document\.querySelector\('\.tabs'\)\?\.scrollLeft\|\|0/);
+  assert.match(app, /current\.scrollLeft=previousTabsScroll/);
+});
+
+
+test('sale price supports ON_BID mode across admin, public listings, QR page and receipt',()=>{
+  const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+  const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+  const publicAsset=readFileSync(new URL('../public/asset.html',import.meta.url),'utf8');
+  const receipt=readFileSync(new URL('../public/receipt.html',import.meta.url),'utf8');
+  assert.ok(app.includes('value="ON_BID"') && app.includes('>على السوم</option>'));
+  assert.match(app,/salePriceMode:/);
+  assert.match(app,/a\.salePriceMode==='ON_BID'.{0,100}على السوم/s);
+  assert.match(server,/salePrice:clean\.salePriceMode==='ON_BID'/);
+  assert.match(server,/a\.salePriceMode=\['SALE','SALE_RENT'\]\.includes\(a\.purpose\)&&b\.salePriceMode==='ON_BID'/);
+  assert.match(publicAsset,/a\.salePriceMode==='ON_BID'.{0,100}على السوم/s);
+  assert.match(receipt,/d\.salePriceMode==='ON_BID'.{0,100}على السوم/s);
 });

@@ -34,7 +34,7 @@ async function load(){
   if(cf.capacity)specs.push(['السعة',cf.capacity]);
   if(cf.serialNumber)specs.push(['الرقم التسلسلي',cf.serialNumber]);
   const prices=[];
-  if(a.salePrice!=null)prices.push(`<div><small>السعر المطلوب</small><div class="price">${money(a.salePrice,a.currencySymbol)}</div></div>`);
+  if(a.salePriceMode==='ON_BID')prices.push(`<div><small>سعر البيع</small><div class="price">على السوم</div></div>`);else if(a.salePrice!=null)prices.push(`<div><small>السعر المطلوب</small><div class="price">${money(a.salePrice,a.currencySymbol)}</div></div>`);
   if(a.currentBid!=null)prices.push(`<div><small>السوم الحالي</small><div class="price">${money(a.currentBid,a.currencySymbol)}</div></div>`);
   if(a.rentPrice!=null)prices.push(`<div><small>سعر الإيجار</small><div class="price">${money(a.rentPrice,a.currencySymbol)} / ${esc(a.rentUnit||'يوم')}</div></div>`);
   const gallery=(a.images||[]).map(i=>`<img src="${esc(i.url)}" alt="${esc(a.title)}">`).join('');
