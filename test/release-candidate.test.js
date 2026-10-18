@@ -73,7 +73,7 @@ test('admin home resets navigation history and keeps exit guard below it', async
   assert.match(app, /history\.pushState\(\{view:'admin-home'\}/);
   assert.match(app, /return dashboard\('overview',true\)/);
   const sw = await fs.readFile(new URL('../public/sw-admin-v3.js', import.meta.url), 'utf8');
-  assert.match(sw, /houshak-admin-v50/);
+  assert.match(sw, /houshak-admin-v55/);
 });
 
 
@@ -85,7 +85,7 @@ test('customer preview provides direct return to admin without exit confirmation
   assert.match(app, /function returnToAdminPreview\(\).*location\.replace\('\/admin'\)/);
   assert.match(app, /if\(state\.customerPreview&&!location\.pathname\.startsWith\('\/admin'\)\)\{window\.__returningFromCustomerPreview=true;location\.replace\('\/admin'\);return\}/);
   const clientSw = await fs.readFile(new URL('../public/sw-client-v3.js', import.meta.url), 'utf8');
-  assert.match(clientSw, /houshak-client-v42/);
+  assert.match(clientSw, /houshak-client-v47/);
 });
 
 
@@ -224,7 +224,7 @@ test('contract identity document upload is validated, attached to each party, an
  assert.ok(server.includes("data:image/")); assert.match(server,/jpeg\|png\|webp/);
  assert.match(app,/capture="environment"/); assert.match(app,/readIdentityImage/);
  assert.match(app,/identity-documents/); assert.match(app,/صور وثائق أطراف الاتفاقية/);
- assert.match(sw,/houshak-admin-v50/);
+ assert.match(sw,/houshak-admin-v55/);
 });
 
 test('contract approval is explicit, restricted to management, and print waits for identity images',()=>{
@@ -258,10 +258,10 @@ test('health and export endpoints report the current package version and caches 
  const adminSw=readFileSync(new URL('../public/sw-admin-v3.js',import.meta.url),'utf8');
  const clientSw=readFileSync(new URL('../public/sw-client-v3.js',import.meta.url),'utf8');
  const pkg=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));
- assert.equal(pkg.version,'2.10.73');
- assert.match(server,/version:'2\.10\.73'/);
- assert.match(adminSw,/houshak-admin-v50/);
- assert.match(clientSw,/houshak-client-v42/);
+ assert.equal(pkg.version,'2.10.79');
+ assert.match(server,/version:'2\.10\.79'/);
+ assert.match(adminSw,/houshak-admin-v55/);
+ assert.match(clientSw,/houshak-client-v47/);
 });
 
 
@@ -282,7 +282,7 @@ test('v2.10.42 provides actual PDF file sharing (preserved in 2.10.44) for contr
  const admin = readFileSync(path.join(root,'public','admin.html'),'utf8');
  const server = readFileSync(path.join(root,'src','server.js'),'utf8');
  const pkg = JSON.parse(readFileSync(path.join(root,'package.json'),'utf8'));
- assert.equal(pkg.version,'2.10.73');
+ assert.equal(pkg.version,'2.10.79');
  assert.match(app,/مشاركة العقد PDF عبر واتساب/);
  assert.match(app,/createContractPdfFile/);
  assert.match(app,/navigator\.share\(\{files:\[file\]/);
@@ -290,7 +290,7 @@ test('v2.10.42 provides actual PDF file sharing (preserved in 2.10.44) for contr
  assert.match(app,/لم يتم إرسال رابط/);
  assert.match(admin,/html2canvas\/1\.4\.1/);
  assert.match(admin,/jspdf\/2\.5\.1/);
- assert.match(server,/version:'2\.10\.73'/);
+ assert.match(server,/version:'2\.10\.79'/);
 });
 
 
@@ -300,7 +300,7 @@ test('v2.10.44 preserves identity image hashes as part of approved contract inte
  assert.match(server,/sellerIdentityImageHash/);
  assert.match(server,/partyIdentityImageHash/);
  assert.match(server,/snapshotMatches&&imagesMatch\?'VERIFIED':'MISMATCH'/);
- assert.match(server,/version:'2\.10\.73'/);
+ assert.match(server,/version:'2\.10\.79'/);
 });
 
 test('contract approval does not create a second financial transaction implicitly',()=>{
@@ -338,7 +338,7 @@ test('v2.10.48 adds rental return lifecycle, linked reservation contracts, invoi
  const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
  const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
  const pkg=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));
- assert.equal(pkg.version,'2.10.73');
+ assert.equal(pkg.version,'2.10.79');
  assert.match(server,/rentalReturn=p\.match/);
  assert.match(server,/sourceType:'INVOICE_REFUND'/);
  assert.match(server,/reservationContractMismatches/);
@@ -357,7 +357,7 @@ test('v2.10.49 validates booking dates and adds authenticated, verifiable backup
  const adminSw=readFileSync(new URL('../public/sw-admin-v3.js',import.meta.url),'utf8');
  const clientSw=readFileSync(new URL('../public/sw-client-v3.js',import.meta.url),'utf8');
  const pkg=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));
- assert.equal(pkg.version,'2.10.73');
+ assert.equal(pkg.version,'2.10.79');
  assert.match(server,/function validDateValue\(value\)/);
  assert.match(server,/تاريخ بداية الحجز غير صحيح/);
  assert.match(server,/تاريخ نهاية الحجز غير صحيح/);
@@ -371,8 +371,8 @@ test('v2.10.49 validates booking dates and adds authenticated, verifiable backup
  assert.match(server,/contractIntegrityIssues/);
  assert.match(server,/reservationDateIssues/);
  assert.match(app,/نسخة احتياطية قابلة للتحقق/);
- assert.match(adminSw,/houshak-admin-v50/);
- assert.match(clientSw,/houshak-client-v42/);
+ assert.match(adminSw,/houshak-admin-v55/);
+ assert.match(clientSw,/houshak-client-v47/);
 });
 
 
@@ -436,7 +436,7 @@ test('v2.10.56 compresses agreement document images and offers camera plus galle
  assert.match(app,/accept="image\/\*"/); assert.match(app,/capture="environment"/);
  assert.match(app,/اختيار من الاستوديو \/ الملفات/);
  assert.match(app,/readIdentityImage\(selectedIdentityImage\('ctpartyimg','ctpartyimgCamera'\)\)/);
- assert.match(adminSw,/houshak-admin-v50/); assert.match(clientSw,/houshak-client-v42/);
+ assert.match(adminSw,/houshak-admin-v55/); assert.match(clientSw,/houshak-client-v47/);
 });
 
 
@@ -463,8 +463,8 @@ test('v2.10.58 balances contract print margins and justifies body text',()=>{
  assert.match(app,/@page\{size:A4;margin:18mm 18mm 18mm 18mm\}/);
  assert.match(app,/max-width:174mm;min-height:260mm;margin:0 auto;padding:8mm 0/);
  assert.match(app,/text-align:justify;text-align-last:right;text-justify:inter-word/);
- assert.match(adminSw,/houshak-admin-v50/);
- assert.match(clientSw,/houshak-client-v42/);
+ assert.match(adminSw,/houshak-admin-v55/);
+ assert.match(clientSw,/houshak-client-v47/);
 });
 
 test('v2.10.62 improves customer marketplace home, search, sorting, favorites, and detail conversion flow',()=>{
@@ -472,7 +472,7 @@ test('v2.10.62 improves customer marketplace home, search, sorting, favorites, a
  const css=readFileSync(new URL('../public/styles.css',import.meta.url),'utf8');
  const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
  const pkg=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));
- assert.equal(pkg.version,'2.10.73');
+ assert.equal(pkg.version,'2.10.79');
  assert.match(app,/أحدث المعروض/);
  assert.match(app,/client-category-rail/);
  assert.match(css,/aspect-ratio:4\/3/);
@@ -513,7 +513,7 @@ test('admin users can be edited and yard locations and handover records expose f
 test('v2.10.69 places newest listings before compact categories and standardizes card media',()=>{const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');const css=readFileSync(new URL('../public/styles.css',import.meta.url),'utf8');const home=app.slice(app.indexOf('async function home(fromHistory=false)'),app.indexOf('function homeSearch()'));assert.ok(home.indexOf('client-latest-section')<home.indexOf('client-category-section'),'latest listings should appear before categories');assert.match(home,/sortClientListings\(all,'newest'\)/);assert.match(home,/client-category-rail/);assert.doesNotMatch(home,/client-trust-strip/);assert.match(css,/aspect-ratio:4\/3/);assert.match(css,/market-card-subtitle/);assert.match(css,/\-webkit-line-clamp:2/);});
 
 
-test('v2.10.69 automatically refreshes customer listings while the page is open',()=>{const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');const sw=readFileSync(new URL('../public/sw-client-v3.js',import.meta.url),'utf8');assert.match(app,/function startCustomerAutoRefresh\(\)/);assert.match(app,/setInterval\(\(\)=>\{if\(document\.visibilityState==='visible'&&navigator\.onLine\)refreshCustomerListings\(\)/);assert.match(app,/api\('\/api\/listings\?limit=200'\)/);assert.match(app,/clientLatestCards/);assert.match(app,/clientListingAutoRefreshNote/);assert.match(app,/cache:method==='GET'\?'no-store':undefined/);assert.match(sw,/houshak-client-v42/);});
+test('v2.10.69 automatically refreshes customer listings while the page is open',()=>{const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');const sw=readFileSync(new URL('../public/sw-client-v3.js',import.meta.url),'utf8');assert.match(app,/function startCustomerAutoRefresh\(\)/);assert.match(app,/setInterval\(\(\)=>\{if\(document\.visibilityState==='visible'&&navigator\.onLine\)refreshCustomerListings\(\)/);assert.match(app,/api\('\/api\/listings\?limit=200'\)/);assert.match(app,/clientLatestCards/);assert.match(app,/clientListingAutoRefreshNote/);assert.match(app,/cache:method==='GET'\?'no-store':undefined/);assert.match(sw,/houshak-client-v47/);});
 
 
 test('v2.10.69 syncs edited asset details and images on customer detail pages and removes unavailable listings',()=>{const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');assert.match(app,/function clientAssetSignature\(a\)/);assert.match(app,/view==='detail'/);assert.match(app,/api\('\/api\/listings\/'\+encodeURIComponent\(id\)\)/);assert.match(app,/هذا الإعلان لم يعد متاحًا للعرض/);assert.match(app,/clientDetailAutoRefreshNote/);assert.match(server,/updatedAt:a\.updatedAt\|\|a\.createdAt\|\|null/);assert.match(server,/db\.images\.push\(i\);a\.updatedAt=now\(\)/);});
@@ -521,9 +521,9 @@ test('v2.10.69 syncs edited asset details and images on customer detail pages an
 
 test('v2.10.71 automatically refreshes request tracking while tracker modal is open',()=>{const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');assert.match(app,/function startRequestTrackerAutoRefresh\(\)/);assert.match(app,/15000\)/);assert.match(app,/trackRequest\(true\)/);assert.match(app,/function stopRequestTrackerAutoRefresh\(\)/);assert.match(app,/function closeModal\(\)\{stopRequestTrackerAutoRefresh\(\)/);assert.match(app,/تتحدث حالته تلقائيًا كل 15 ثانية/);assert.match(app,/window\.__requestTrackerBusy/);});
 
-test('v2.10.71 repairs missing admin create forms for categories, yard locations, and handover reports',()=>{const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');const admin=readFileSync(new URL('../public/admin.html',import.meta.url),'utf8');assert.ok(app.includes('function categoryForm(c={})'));assert.ok(app.includes('async function saveCategory(id)'));assert.ok(app.includes('onclick="categoryForm()">إضافة تصنيف'));assert.ok(app.includes('function locationForm(l={})'));assert.ok(app.includes('async function saveLocation(id)'));assert.ok(app.includes('onclick="locationForm()">إضافة موقع'));assert.ok(app.includes('async function conditionForm()'));assert.ok(app.includes('async function saveCondition()'));assert.ok(app.includes('onclick="conditionForm()">إضافة محضر استلام/تسليم'));assert.ok(app.includes('function userForm(u={})'));assert.ok(app.includes("async function saveUser(id='')"));assert.ok(server.includes("p==='/api/admin/categories'&&method==='POST'"));assert.ok(server.includes("p==='/api/admin/locations'&&method==='POST'"));assert.ok(server.includes("p==='/api/admin/conditions'&&method==='POST'"));assert.ok(server.includes("p==='/api/admin/users'&&method==='POST'"));assert.match(admin,/app\.js\?v=2\.10\.73/);});
+test('v2.10.71 repairs missing admin create forms for categories, yard locations, and handover reports',()=>{const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');const admin=readFileSync(new URL('../public/admin.html',import.meta.url),'utf8');assert.ok(app.includes('function categoryForm(c={})'));assert.ok(app.includes('async function saveCategory(id)'));assert.ok(app.includes('onclick="categoryForm()">إضافة تصنيف'));assert.ok(app.includes('function locationForm(l={})'));assert.ok(app.includes('async function saveLocation(id)'));assert.ok(app.includes('onclick="locationForm()">إضافة موقع'));assert.ok(app.includes('async function conditionForm()'));assert.ok(app.includes('async function saveCondition()'));assert.ok(app.includes('onclick="conditionForm()">إضافة محضر استلام/تسليم'));assert.ok(app.includes('function userForm(u={})'));assert.ok(app.includes("async function saveUser(id='')"));assert.ok(server.includes("p==='/api/admin/categories'&&method==='POST'"));assert.ok(server.includes("p==='/api/admin/locations'&&method==='POST'"));assert.ok(server.includes("p==='/api/admin/conditions'&&method==='POST'"));assert.ok(server.includes("p==='/api/admin/users'&&method==='POST'"));assert.match(admin,/app\.js\?v=2\.10\.74/);});
 
-test('v2.10.73 all inline click handlers resolve and public listings back button is implemented',()=>{
+test('v2.10.74 all inline click handlers resolve and public listings back button is implemented',()=>{
   const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
   const defined=new Set([...app.matchAll(/(?:async\s+)?function\s+([\w$]+)\s*\(/g)].map(m=>m[1]));
   const called=new Set();
@@ -535,4 +535,74 @@ test('v2.10.73 all inline click handlers resolve and public listings back button
   assert.deepEqual(unresolved,[],'inline onclick references must resolve to a defined function or approved browser/global built-in');
   assert.match(app,/function goBackToPublic\(purpose='',cat=''\)/);
   assert.match(app,/onclick="goBackToPublic\('/);
+});
+
+
+test('v2.10.74 asset image management has safe delete and primary-image actions',()=>{
+ const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+ const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+ assert.match(server,/ASSET_IMAGE_ORDER/);assert.match(server,/ASSET_IMAGE/);assert.match(server,/target\.startsWith\(path\.resolve\(uploadDir\)\+path\.sep\)/);
+ assert.match(app,/setAssetImagePrimary/);assert.match(app,/deleteAssetImage/);assert.match(app,/الصور المحفوظة/);
+});
+
+
+test('v2.10.76 propagates inactive category state to public listing and inquiry endpoints',()=>{const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');assert.match(server,/function publicListingAvailable\(a\).*category\(a\.categoryId\)\?\.active===true/);assert.match(server,/function publicSearch\(a,q,purpose,categoryId,min,max,city\)\{if\(!publicListingAvailable\(a\)\)/);assert.match(server,/if\(!publicListingAvailable\(a\)\)return send\(res,404,\{error:'الإعلان غير متاح'\}\)/);const pkg=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));assert.equal(pkg.version,'2.10.79');});
+
+
+test('v2.10.76 removes duplicate footer actions and identifies the active account and actor for admin actions',()=>{
+ const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+ const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+ const css=readFileSync(new URL('../public/styles.css',import.meta.url),'utf8');
+ assert.match(app,/const roleLabel=role=>/);
+ assert.match(app,/function currentUserBadge\(\)/);
+ assert.match(app,/تم تنفيذ العملية بواسطة/);
+ assert.match(app,/actorRole\|\|x\.actor\?\.role/);
+ const shell=app.slice(app.indexOf('function shell(content)'),app.indexOf('function adminShell(content)'));
+ assert.doesNotMatch(shell,/footer-about-btn/);
+ assert.doesNotMatch(shell,/\$\{locationButton\(s\)\}/);
+ assert.match(app,/تحتاج إلى مساعدة/);
+ assert.match(shell,/منصة إدارة وعرض ووساطة المركبات والمعدات والأصول/);
+ assert.match(server,/createdByName:u\.name,createdByRole:u\.role/);
+ assert.match(server,/audit\(u,'CREATE','CATEGORY'/);
+ assert.match(server,/audit\(u,'CREATE','LOCATION'/);
+ assert.match(css,/\.current-user-badge/);
+ assert.match(css,/\.actor-action-toast/);
+ const pkg=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));
+ assert.equal(pkg.version,'2.10.79');
+});
+
+test('v2.10.77 exposes granular role permissions and enforces them server-side',()=>{
+ const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+ const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+ assert.match(server,/const permissionResources=/);
+ assert.match(server,/function effectivePermissions\(role\)/);
+ assert.match(server,/function requirePermission\(req,res,u,resource,action\)/);
+ assert.match(server,/api\/admin\/role-permissions/);
+ assert.match(server,/audit\(u,'UPDATE','ROLE_PERMISSIONS'/);
+ assert.match(server,/role==='ADMIN'\)return defaultRolePermissions\('ADMIN'\)/);
+ assert.match(app,/الأدوار والصلاحيات/);
+ assert.match(app,/data-permission-resource/);
+ assert.match(app,/saveRolePermissions/);
+});
+
+test('temporary offers are time-bounded, validated by server, and rendered before gallery',()=>{
+  const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+  const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+  const css=readFileSync(new URL('../public/styles.css',import.meta.url),'utf8');
+  assert.match(server,/promoEndsAt/);
+  assert.match(server,/\[24,48,72\]\.includes\(hours\)/);
+  assert.match(server,/temporaryOffer:promoActive\?/);
+  assert.match(app,/تفعيل العرض المؤقت/);
+  assert.match(app,/24 ساعة — يوم واحد/);
+  assert.match(app,/a\.temporaryOffer\?`<section class="temporary-offer-banner"/);
+  assert.match(app,/temporary-offer-banner.*?gallery/s);
+  assert.match(css,/\.temporary-offer-banner/);
+  assert.match(app,/function temporaryOffersSection\(all\)/);
+  assert.match(app,/a\.temporaryOffer&&a\.temporaryOffer\.endsAt/);
+  assert.match(app,/client-temporary-offers-section/);
+  assert.match(app,/offersSection\.outerHTML=offersMarkup/);
+  const clientSw=readFileSync(new URL('../public/sw-client-v3.js',import.meta.url),'utf8');
+  const adminSw=readFileSync(new URL('../public/sw-admin-v3.js',import.meta.url),'utf8');
+  assert.match(clientSw,/houshak-client-v47/);
+  assert.match(adminSw,/houshak-admin-v55/);
 });
