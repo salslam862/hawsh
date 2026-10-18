@@ -73,5 +73,17 @@ test('admin home resets navigation history and keeps exit guard below it', async
   assert.match(app, /history\.pushState\(\{view:'admin-home'\}/);
   assert.match(app, /return dashboard\('overview',true\)/);
   const sw = await fs.readFile(new URL('../public/sw-admin-v3.js', import.meta.url), 'utf8');
-  assert.match(sw, /houshak-admin-v7/);
+  assert.match(sw, /houshak-admin-v8/);
+});
+
+
+test('customer preview provides direct return to admin without exit confirmation', async () => {
+  const fs = await import('node:fs/promises');
+  const app = await fs.readFile(new URL('../public/app.js', import.meta.url), 'utf8');
+  assert.match(app, /customer-preview-bar/);
+  assert.match(app, /العودة إلى لوحة الإدارة/);
+  assert.match(app, /function returnToAdminPreview\(\).*location\.replace\('\/admin'\)/);
+  assert.match(app, /if\(state\.customerPreview&&!location\.pathname\.startsWith\('\/admin'\)\)\{window\.__returningFromCustomerPreview=true;location\.replace\('\/admin'\);return\}/);
+  const clientSw = await fs.readFile(new URL('../public/sw-client-v3.js', import.meta.url), 'utf8');
+  assert.match(clientSw, /houshak-client-v6/);
 });
