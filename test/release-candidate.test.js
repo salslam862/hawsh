@@ -73,7 +73,7 @@ test('admin home resets navigation history and keeps exit guard below it', async
   assert.match(app, /history\.pushState\(\{view:'admin-home'\}/);
   assert.match(app, /return dashboard\('overview',true\)/);
   const sw = await fs.readFile(new URL('../public/sw-admin-v3.js', import.meta.url), 'utf8');
-  assert.match(sw, /houshak-admin-v30/);
+  assert.match(sw, /houshak-admin-v37/);
 });
 
 
@@ -85,7 +85,7 @@ test('customer preview provides direct return to admin without exit confirmation
   assert.match(app, /function returnToAdminPreview\(\).*location\.replace\('\/admin'\)/);
   assert.match(app, /if\(state\.customerPreview&&!location\.pathname\.startsWith\('\/admin'\)\)\{window\.__returningFromCustomerPreview=true;location\.replace\('\/admin'\);return\}/);
   const clientSw = await fs.readFile(new URL('../public/sw-client-v3.js', import.meta.url), 'utf8');
-  assert.match(clientSw, /houshak-client-v22/);
+  assert.match(clientSw, /houshak-client-v29/);
 });
 
 
@@ -224,7 +224,7 @@ test('contract identity document upload is validated, attached to each party, an
  assert.ok(server.includes("data:image/")); assert.match(server,/jpeg\|png\|webp/);
  assert.match(app,/capture="environment"/); assert.match(app,/readIdentityImage/);
  assert.match(app,/identity-documents/); assert.match(app,/صور وثائق أطراف الاتفاقية/);
- assert.match(sw,/houshak-admin-v30/);
+ assert.match(sw,/houshak-admin-v37/);
 });
 
 test('contract approval is explicit, restricted to management, and print waits for identity images',()=>{
@@ -258,10 +258,10 @@ test('health and export endpoints report the current package version and caches 
  const adminSw=readFileSync(new URL('../public/sw-admin-v3.js',import.meta.url),'utf8');
  const clientSw=readFileSync(new URL('../public/sw-client-v3.js',import.meta.url),'utf8');
  const pkg=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));
- assert.equal(pkg.version,'2.10.51');
- assert.match(server,/version:'2\.10\.51'/);
- assert.match(adminSw,/houshak-admin-v30/);
- assert.match(clientSw,/houshak-client-v22/);
+ assert.equal(pkg.version,'2.10.58');
+ assert.match(server,/version:'2\.10\.58'/);
+ assert.match(adminSw,/houshak-admin-v37/);
+ assert.match(clientSw,/houshak-client-v29/);
 });
 
 
@@ -282,7 +282,7 @@ test('v2.10.42 provides actual PDF file sharing (preserved in 2.10.44) for contr
  const admin = readFileSync(path.join(root,'public','admin.html'),'utf8');
  const server = readFileSync(path.join(root,'src','server.js'),'utf8');
  const pkg = JSON.parse(readFileSync(path.join(root,'package.json'),'utf8'));
- assert.equal(pkg.version,'2.10.51');
+ assert.equal(pkg.version,'2.10.58');
  assert.match(app,/مشاركة العقد PDF عبر واتساب/);
  assert.match(app,/createContractPdfFile/);
  assert.match(app,/navigator\.share\(\{files:\[file\]/);
@@ -290,7 +290,7 @@ test('v2.10.42 provides actual PDF file sharing (preserved in 2.10.44) for contr
  assert.match(app,/لم يتم إرسال رابط/);
  assert.match(admin,/html2canvas\/1\.4\.1/);
  assert.match(admin,/jspdf\/2\.5\.1/);
- assert.match(server,/version:'2\.10\.51'/);
+ assert.match(server,/version:'2\.10\.58'/);
 });
 
 
@@ -300,7 +300,7 @@ test('v2.10.44 preserves identity image hashes as part of approved contract inte
  assert.match(server,/sellerIdentityImageHash/);
  assert.match(server,/partyIdentityImageHash/);
  assert.match(server,/snapshotMatches&&imagesMatch\?'VERIFIED':'MISMATCH'/);
- assert.match(server,/version:'2\.10\.51'/);
+ assert.match(server,/version:'2\.10\.58'/);
 });
 
 test('contract approval does not create a second financial transaction implicitly',()=>{
@@ -338,7 +338,7 @@ test('v2.10.48 adds rental return lifecycle, linked reservation contracts, invoi
  const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
  const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
  const pkg=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));
- assert.equal(pkg.version,'2.10.51');
+ assert.equal(pkg.version,'2.10.58');
  assert.match(server,/rentalReturn=p\.match/);
  assert.match(server,/sourceType:'INVOICE_REFUND'/);
  assert.match(server,/reservationContractMismatches/);
@@ -357,7 +357,7 @@ test('v2.10.49 validates booking dates and adds authenticated, verifiable backup
  const adminSw=readFileSync(new URL('../public/sw-admin-v3.js',import.meta.url),'utf8');
  const clientSw=readFileSync(new URL('../public/sw-client-v3.js',import.meta.url),'utf8');
  const pkg=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));
- assert.equal(pkg.version,'2.10.51');
+ assert.equal(pkg.version,'2.10.58');
  assert.match(server,/function validDateValue\(value\)/);
  assert.match(server,/تاريخ بداية الحجز غير صحيح/);
  assert.match(server,/تاريخ نهاية الحجز غير صحيح/);
@@ -371,12 +371,12 @@ test('v2.10.49 validates booking dates and adds authenticated, verifiable backup
  assert.match(server,/contractIntegrityIssues/);
  assert.match(server,/reservationDateIssues/);
  assert.match(app,/نسخة احتياطية قابلة للتحقق/);
- assert.match(adminSw,/houshak-admin-v30/);
- assert.match(clientSw,/houshak-client-v22/);
+ assert.match(adminSw,/houshak-admin-v37/);
+ assert.match(clientSw,/houshak-client-v29/);
 });
 
 
-test('v2.10.51 adds authenticated restore preflight without applying a restore',()=>{
+test('restore preflight remains authenticated without applying a restore',()=>{
  const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
  assert.match(server,/api\/admin\/backup\/inspect-restore/);
  assert.match(server,/COLLECTION_INVALID/);
@@ -384,4 +384,85 @@ test('v2.10.51 adds authenticated restore preflight without applying a restore',
  assert.match(server,/MISSING_CONTRACT_REFERENCE/);
  assert.match(server,/previewOnly:true/);
  assert.match(server,/INSPECT_BACKUP_RESTORE/);
+});
+
+test('isolated restore rehearsal remains covered and financial preflight warnings',()=>{
+ const server=readFileSync(path.join(root,'src/server.js'),'utf8');
+ const integration=readFileSync(path.join(root,'test/contract-lifecycle.integration.test.js'),'utf8');
+ assert.match(server,/INVOICE_FINANCIAL_MISMATCH/);assert.match(server,/TRANSACTION_INVALID_FINANCIAL_ROW/);assert.match(integration,/restored backup should boot in a separate isolated process/);assert.match(integration,/restored asset count should match exported backup/);
+});
+
+
+test('independent configurable yard branding remains supported for document headers',()=>{
+ const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+ const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+ const receipt=readFileSync(new URL('../public/receipt.html',import.meta.url),'utf8');
+ assert.match(server,/yardName:setting\('yardName','حوش أبو مناحي'\)/);
+ for(const key of ['yardName','yardAddress','yardPhone','yardWhatsapp','yardEmail','yardLogo']) assert.match(server,new RegExp(key));
+ assert.match(app,/id="syn"/); assert.match(app,/id="sya"/); assert.match(app,/id="syl"/);
+ assert.match(app,/yardName:\$\('#syn'\)/);
+ assert.match(receipt,/documentYardName\|\|'حوش أبو مناحي'/);
+ assert.match(receipt,/سند صادر عبر منصة/);
+ assert.match(server,/documentHeader:\{yardName:systemSettings\(\)\.yardName/);
+ assert.match(app,/brandName=brand\.yardName/);
+});
+
+
+test('v2.10.56 adds a read-only asset lifecycle audit for conflicting reservation, rental, and storage states',()=>{
+ const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+ assert.match(server,/api\/admin\/assets\/lifecycle-audit/);
+ for(const code of ['MULTIPLE_CONFIRMED_RESERVATIONS','MULTIPLE_ACTIVE_STORAGE_CHARGES','RENTED_WITHOUT_ACTIVE_RENTAL','ACTIVE_RENTAL_ASSET_STATUS_MISMATCH','EXITED_ASSET_HAS_CONFIRMED_RESERVATION','EXITED_ASSET_HAS_ACTIVE_STORAGE','EXIT_TIMESTAMP_STATUS_MISMATCH']) assert.match(server,new RegExp(code));
+ assert.match(server,/readOnly:true/); assert.match(server,/تقرير تشخيصي للقراءة فقط/);
+});
+
+
+test('v2.10.56 adds confirmed, reasoned and restricted lifecycle correction for missing exit timestamp',()=>{
+ const server=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');
+ assert.match(server,/api\/admin\/assets\/lifecycle-audit\/resolve/);
+ assert.match(server,/يلزم تأكيد الإجراء صراحةً/);assert.match(server,/سبب التصحيح مطلوب/);
+ assert.match(server,/تغيرت حالة الأصل أو تمت معالجة التعارض بالفعل/);
+ assert.match(server,/ASSET_LIFECYCLE_ISSUE/);assert.match(server,/هذا التعارض يحتاج مراجعة السجلات المرتبطة/);
+});
+
+
+test('v2.10.56 compresses agreement document images and offers camera plus gallery pickers',()=>{
+ const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+ const adminSw=readFileSync(new URL('../public/sw-admin-v3.js',import.meta.url),'utf8');
+ const clientSw=readFileSync(new URL('../public/sw-client-v3.js',import.meta.url),'utf8');
+ assert.match(app,/IDENTITY_IMAGE_MAX_BYTES=950_000/);
+ assert.match(app,/async function compressIdentityImage\(file\)/);
+ assert.match(app,/canvas\.toBlob\(resolve,'image\/jpeg',quality\)/);
+ assert.match(app,/ctpartyimgCamera/); assert.match(app,/ctsellerimgCamera/); assert.match(app,/ctsaleimgCamera/); assert.match(app,/ctassetdocimgCamera/);
+ assert.match(app,/accept="image\/\*"/); assert.match(app,/capture="environment"/);
+ assert.match(app,/اختيار من الاستوديو \/ الملفات/);
+ assert.match(app,/readIdentityImage\(selectedIdentityImage\('ctpartyimg','ctpartyimgCamera'\)\)/);
+ assert.match(adminSw,/houshak-admin-v37/); assert.match(clientSw,/houshak-client-v29/);
+});
+
+
+test('v2.10.58 adds right-aligned RTL contract paper, PDF file sharing, and optional parking fee for sale assets',()=>{
+ const root=path.resolve(new URL('..',import.meta.url).pathname);
+ const app=readFileSync(path.join(root,'public','app.js'),'utf8');
+ const server=readFileSync(path.join(root,'src','server.js'),'utf8');
+ assert.match(app,/direction:rtl;text-align:right;font-style:normal/);
+ assert.match(app,/مشاركة العقد PDF عبر واتساب/);
+ assert.match(app,/navigator\.share\(\{files:\[file\]/);
+ assert.match(app,/رسوم الموقف/);
+ assert.match(app,/aparkingEnabled/);
+ assert.match(server,/parkingFeeEnabled/);
+ assert.match(server,/parkingFee:Number\(a\.parkingFee\|\|0\)/);
+ assert.match(app,/رسوم الموقف المتفق عليها/);
+});
+
+
+test('v2.10.58 balances contract print margins and justifies body text',()=>{
+ const root=path.resolve(new URL('..',import.meta.url).pathname);
+ const app=readFileSync(path.join(root,'public','app.js'),'utf8');
+ const adminSw=readFileSync(path.join(root,'public','sw-admin-v3.js'),'utf8');
+ const clientSw=readFileSync(path.join(root,'public','sw-client-v3.js'),'utf8');
+ assert.match(app,/@page\{size:A4;margin:18mm 18mm 18mm 18mm\}/);
+ assert.match(app,/max-width:174mm;min-height:260mm;margin:0 auto;padding:8mm 0/);
+ assert.match(app,/text-align:justify;text-align-last:right;text-justify:inter-word/);
+ assert.match(adminSw,/houshak-admin-v37/);
+ assert.match(clientSw,/houshak-client-v29/);
 });

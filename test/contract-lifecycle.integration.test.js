@@ -37,18 +37,30 @@ test('HTTP integration: create asset → create contract → approve → verify 
       await delay(100);
     }
     assert.equal(ready,true,'server should start on isolated test database');
-    assert.equal(healthPayload.version,'2.10.51');
+    assert.equal(healthPayload.version,'2.10.58');
     const login=await fetch(`${base}/api/auth/login`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({phone:'0500000000',password:'Admin@12345'})});
     assert.equal(login.status,200);
     const cookie=(login.headers.get('set-cookie')||'').split(';')[0];
     assert.match(cookie,/^token=/);
     const api=async(pathname,options={})=>fetch(`${base}${pathname}`,{...options,headers:{cookie,'content-type':'application/json',...(options.headers||{})}});
     const unauthManifest=await fetch(`${base}/api/admin/backup/manifest`);assert.equal(unauthManifest.status,401,'backup manifest must require authentication');
-    const manifestResponse=await api('/api/admin/backup/manifest');assert.equal(manifestResponse.status,200);const manifest=await manifestResponse.json();assert.equal(manifest.appVersion,'2.10.51');assert.match(manifest.sha256,/^[a-f0-9]{64}$/);assert.ok(manifest.collectionCounts.assets>=0);
-    const backupResponse=await api('/api/admin/export');assert.equal(backupResponse.status,200);const backup=await backupResponse.json();assert.equal(backup.version,'2.10.51');assert.equal(backup.manifest.sha256,crypto.createHash('sha256').update(JSON.stringify(backup.data)).digest('hex'),'backup digest should match exported database payload');
+    const manifestResponse=await api('/api/admin/backup/manifest');assert.equal(manifestResponse.status,200);const manifest=await manifestResponse.json();assert.equal(manifest.appVersion,'2.10.58');assert.match(manifest.sha256,/^[a-f0-9]{64}$/);assert.ok(manifest.collectionCounts.assets>=0);
+    const backupResponse=await api('/api/admin/export');assert.equal(backupResponse.status,200);const backup=await backupResponse.json();assert.equal(backup.version,'2.10.58');assert.equal(backup.manifest.sha256,crypto.createHash('sha256').update(JSON.stringify(backup.data)).digest('hex'),'backup digest should match exported database payload');
+    // Rehearse restore into a separate DATA_DIR and process; never touch the active test database.
+    const rehearsalDir=await mkdtemp(path.join(tmpdir(),'houshak-restore-rehearsal-'));let rehearsalChild;
+    try{
+      const {mkdir,writeFile}=await import('node:fs/promises');await mkdir(rehearsalDir,{recursive:true});await writeFile(path.join(rehearsalDir,'db.json'),JSON.stringify(backup.data));
+      const rehearsalPort=await freePort();rehearsalChild=spawn(process.execPath,['src/server.js'],{cwd:root,env:{...process.env,PORT:String(rehearsalPort),DATA_DIR:rehearsalDir,NODE_ENV:'test'},stdio:'ignore'});
+      const rehearsalBase=`http://127.0.0.1:${rehearsalPort}`;let rehearsalReady=false,rehearsalHealth;
+      for(let i=0;i<80;i++){try{const r=await fetch(`${rehearsalBase}/api/health`);if(r.ok){rehearsalHealth=await r.json();rehearsalReady=true;break}}catch{}await delay(100)}
+      assert.equal(rehearsalReady,true,'restored backup should boot in a separate isolated process');assert.equal(rehearsalHealth.version,'2.10.58');
+      const rehearsalLogin=await fetch(`${rehearsalBase}/api/auth/login`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({phone:'0500000000',password:'Admin@12345'})});assert.equal(rehearsalLogin.status,200,'restored backup should retain a usable seeded admin account');
+      const rehearsalCookie=(rehearsalLogin.headers.get('set-cookie')||'').split(';')[0];const rehearsalManifest=await fetch(`${rehearsalBase}/api/admin/backup/manifest`,{headers:{cookie:rehearsalCookie}});assert.equal(rehearsalManifest.status,200);const rehearsalManifestData=await rehearsalManifest.json();assert.equal(rehearsalManifestData.collectionCounts.assets,backup.data.assets.length,'restored asset count should match exported backup');
+    }finally{if(rehearsalChild&&!rehearsalChild.killed){rehearsalChild.kill('SIGTERM');await delay(100)}await rm(rehearsalDir,{recursive:true,force:true})}
     const verifyBackup=await api('/api/admin/backup/verify',{method:'POST',body:JSON.stringify(backup)});assert.equal(verifyBackup.status,200);const verifyBackupData=await verifyBackup.json();assert.equal(verifyBackupData.valid,true);assert.equal(verifyBackupData.sha256,backup.manifest.sha256);
     const inspectRestore=await api('/api/admin/backup/inspect-restore',{method:'POST',body:JSON.stringify(backup)});assert.equal(inspectRestore.status,200);const inspectData=await inspectRestore.json();assert.equal(inspectData.restorable,true);assert.equal(inspectData.previewOnly,true);assert.match(inspectData.notice,/لم تُستعد البيانات/);
     const malformedBackup=structuredClone(backup);malformedBackup.data.assets='not-an-array';malformedBackup.manifest.sha256=crypto.createHash('sha256').update(JSON.stringify(malformedBackup.data)).digest('hex');malformedBackup.manifest.bytes=Buffer.byteLength(JSON.stringify(malformedBackup.data),'utf8');const inspectMalformed=await api('/api/admin/backup/inspect-restore',{method:'POST',body:JSON.stringify(malformedBackup)});assert.equal(inspectMalformed.status,422);assert.equal((await inspectMalformed.json()).restorable,false);
+    const financialBackup=structuredClone(backup);if(financialBackup.data.invoices.length){financialBackup.data.invoices[0].paid=Number(financialBackup.data.invoices[0].total||0)+999;financialBackup.manifest.sha256=crypto.createHash('sha256').update(JSON.stringify(financialBackup.data)).digest('hex');financialBackup.manifest.bytes=Buffer.byteLength(JSON.stringify(financialBackup.data),'utf8');financialBackup.manifest.collectionCounts=Object.fromEntries(Object.entries(financialBackup.data).filter(([,v])=>Array.isArray(v)).map(([k,v])=>[k,v.length]));const financialInspection=await api('/api/admin/backup/inspect-restore',{method:'POST',body:JSON.stringify(financialBackup)});assert.equal(financialInspection.status,200);assert.ok((await financialInspection.json()).warnings.some(w=>w.startsWith('INVOICE_FINANCIAL_MISMATCH:')),'financial anomalies should be reported as warnings, not silently repaired')}
     const unauthInspect=await fetch(`${base}/api/admin/backup/inspect-restore`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(backup)});assert.equal(unauthInspect.status,401);
     const tamperedBackup={...backup,data:{...backup.data,settings:[...(backup.data.settings||[]),{id:'tampered',key:'tampered',value:'x'}]}};const verifyTampered=await api('/api/admin/backup/verify',{method:'POST',body:JSON.stringify(tamperedBackup)});assert.equal(verifyTampered.status,422);assert.equal((await verifyTampered.json()).reason,'HASH_MISMATCH');
     const unauthVerify=await fetch(`${base}/api/admin/backup/verify`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(backup)});assert.equal(unauthVerify.status,401);
@@ -57,18 +69,19 @@ test('HTTP integration: create asset → create contract → approve → verify 
     const categories=await categoriesResponse.json();
     const category=categories.find(x=>x.slug==='vehicles');
     assert.ok(category,'seed should include vehicle category');
-    const assetResponse=await api('/api/admin/assets',{method:'POST',body:JSON.stringify({categoryId:category.id,ownerId:'',ownerType:'USER',yardId:'demo-yard',purpose:'SALE',title:'أصل اختبار العقد',salePrice:125000,make:'اختبار',model:'2026'})});
+    const assetResponse=await api('/api/admin/assets',{method:'POST',body:JSON.stringify({categoryId:category.id,ownerId:'',ownerType:'USER',yardId:'demo-yard',purpose:'SALE',title:'أصل اختبار العقد',salePrice:125000,parkingFeeEnabled:true,parkingFee:250,make:'اختبار',model:'2026'})});
     // Use the authenticated administrator as the asset owner when a seeded account is required.
     let assetData=await assetResponse.json();
     let assetId=assetData.id;
     if(assetResponse.status!==201){
       const me=await api('/api/auth/me');
       const meData=await me.json();
-      const retry=await api('/api/admin/assets',{method:'POST',body:JSON.stringify({categoryId:category.id,ownerId:meData.user.id,ownerType:'USER',yardId:'demo-yard',purpose:'SALE',title:'أصل اختبار العقد',salePrice:125000,make:'اختبار',model:'2026'})});
+      const retry=await api('/api/admin/assets',{method:'POST',body:JSON.stringify({categoryId:category.id,ownerId:meData.user.id,ownerType:'USER',yardId:'demo-yard',purpose:'SALE',title:'أصل اختبار العقد',salePrice:125000,parkingFeeEnabled:true,parkingFee:250,make:'اختبار',model:'2026'})});
       assert.equal(retry.status,201,JSON.stringify(await retry.clone().json()));
       assetData=await retry.json();assetId=assetData.id;
     }
     assert.ok(assetId);
+    assert.equal(assetData.parkingFeeEnabled,true,'sale asset should persist the optional parking-fee toggle');assert.equal(assetData.parkingFee,250,'sale asset should persist the parking fee amount');
     const invalidDateReservation=await fetch(`${base}/api/reservations`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({assetId,name:'عميل اختبار',phone:'0501234567',fromAt:'not-a-date',toAt:'also-not-a-date'})});assert.equal(invalidDateReservation.status,400,'invalid reservation dates must be rejected');
     const tinyImage='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jT9sAAAAASUVORK5CYII=';
     const contractResponse=await api('/api/admin/contracts',{method:'POST',body:JSON.stringify({assetId,type:'SALE',partyName:'طرف اختبار',partyPhone:'0501111111',partyIdentityType:'PASSPORT',partyIdentityNumber:'P123',amount:125000,terms:'اختبار دورة العقد',sellerIdentityImage:tinyImage,partyIdentityImage:tinyImage})});
@@ -78,7 +91,7 @@ test('HTTP integration: create asset → create contract → approve → verify 
     assert.equal(approveResponse.status,200,JSON.stringify(await approveResponse.clone().json()));
     const approved=await approveResponse.json();
     assert.equal(approved.status,'APPROVED');
-    assert.ok(approved.approvalSnapshotHash);
+    assert.ok(approved.approvalSnapshotHash);assert.equal(approved.assetSnapshot.parkingFeeEnabled,true);assert.equal(approved.assetSnapshot.parkingFee,250,'contract snapshot should retain the agreed parking fee');
     assert.ok(approved.approvedAt);
     assert.ok(approved.approvedById);
     const contractsResponse=await api('/api/admin/contracts');
@@ -141,6 +154,14 @@ test('HTTP integration: create asset → create contract → approve → verify 
     const reconciliation=await reconciliationResponse.json();
     assert.equal(reconciliation.contractInvoiceMismatches.length,0);
     assert.equal(reconciliation.invoiceMismatches.length,0);
+    const lifecycleAuditResponse=await api('/api/admin/assets/lifecycle-audit');assert.equal(lifecycleAuditResponse.status,200);const lifecycleAudit=await lifecycleAuditResponse.json();assert.equal(lifecycleAudit.readOnly,true);assert.ok(Array.isArray(lifecycleAudit.issues));assert.equal(typeof lifecycleAudit.summary.high,'number');
+    // Controlled lifecycle correction: only the safe missing-exit-timestamp case is auto-correctable.
+    const markExitedForAudit=await api(`/api/admin/assets/${assetId}`,{method:'PUT',body:JSON.stringify({status:'EXITED'})});assert.equal(markExitedForAudit.status,200);
+    const missingExitAudit=await api('/api/admin/assets/lifecycle-audit');assert.equal(missingExitAudit.status,200);const missingExitReport=await missingExitAudit.json();assert.ok(missingExitReport.issues.some(x=>x.code==='EXITED_WITHOUT_EXIT_TIMESTAMP'&&String(x.assetId)===String(assetId)));
+    const noConfirm=await api('/api/admin/assets/lifecycle-audit/resolve',{method:'POST',body:JSON.stringify({issueCode:'EXITED_WITHOUT_EXIT_TIMESTAMP',assetId,reason:'مراجعة سجل الخروج',confirmed:false})});assert.equal(noConfirm.status,400);
+    const unsafeResolve=await api('/api/admin/assets/lifecycle-audit/resolve',{method:'POST',body:JSON.stringify({issueCode:'MULTIPLE_CONFIRMED_RESERVATIONS',assetId,reason:'مراجعة الحجوزات المتعارضة',confirmed:true})});assert.equal(unsafeResolve.status,409);
+    const resolved=await api('/api/admin/assets/lifecycle-audit/resolve',{method:'POST',body:JSON.stringify({issueCode:'EXITED_WITHOUT_EXIT_TIMESTAMP',assetId,reason:'مطابقة سجل الاستلام الورقي',confirmed:true})});assert.equal(resolved.status,200,JSON.stringify(await resolved.clone().json()));const resolvedData=await resolved.json();assert.ok(resolvedData.next.exitAt);assert.equal(resolvedData.previous.exitAt,null);assert.equal(resolvedData.reason,'مطابقة سجل الاستلام الورقي');
+    const repeatResolve=await api('/api/admin/assets/lifecycle-audit/resolve',{method:'POST',body:JSON.stringify({issueCode:'EXITED_WITHOUT_EXIT_TIMESTAMP',assetId,reason:'محاولة تكرار التصحيح',confirmed:true})});assert.equal(repeatResolve.status,409,'repeat correction must be blocked after state changes');
     for(const key of ['invoiceBalanceMismatches','transactionIntegrityIssues','contractIntegrityIssues','reservationDateIssues','duplicateInvoiceNumbers'])assert.ok(Array.isArray(reconciliation[key]),`reconciliation should include ${key}`);
     const exportResponse=await api('/api/admin/export');
     assert.equal(exportResponse.status,200);
