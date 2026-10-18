@@ -1,3 +1,4 @@
+import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {deriveVisibility} from '../src/testable.js';
@@ -10,7 +11,6 @@ test('release candidate visibility matches production rules',()=>{
   assert.equal(deriveVisibility('STORAGE','ACTIVE','AUTO'),false);
 });
 
-import { readFileSync } from 'node:fs';
 import fs from 'node:fs';
 import path from 'node:path';
 const root=path.resolve(new URL('..',import.meta.url).pathname);
@@ -125,3 +125,9 @@ test('sale price supports ON_BID mode across admin, public listings, QR page and
   assert.match(publicAsset,/a\.salePriceMode==='ON_BID'.{0,100}على السوم/s);
   assert.match(receipt,/d\.salePriceMode==='ON_BID'.{0,100}على السوم/s);
 });
+
+import {hashPassword,verifyPassword,isLegacyPasswordHash} from '../src/db.js';
+test('password hashes use salted scrypt and verify correctly',()=>{const h=hashPassword('Strong-test-123');assert.ok(h.startsWith('scrypt$'));assert.equal(verifyPassword('Strong-test-123',h),true);assert.equal(verifyPassword('wrong',h),false);assert.notEqual(h,hashPassword('Strong-test-123'));assert.equal(isLegacyPasswordHash(h),false)});
+test('legacy SHA-256 passwords remain verifiable during migration',async()=>{const {default:crypto}=await import('node:crypto');const legacy=crypto.createHash('sha256').update('legacy-pass').digest('hex');assert.equal(verifyPassword('legacy-pass',legacy),true);assert.equal(isLegacyPasswordHash(legacy),true)});
+test('public asset response excludes internal plate, entry timestamp, and private notes',()=>{const s=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');assert.match(s,/plateNumber:''/);assert.match(s,/locationCode:''/);assert.match(s,/entryAt:null/);assert.match(s,/publicCustomFields\(a\.customFields\|\|\{\}\)/);assert.doesNotMatch(s,/customFields:\{\.\.\.\(a\.customFields\|\|\{\}\)\},category:c/)});
+test('contract forms cover sale rent storage and brokerage with phone snapshots',()=>{const s=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');for(const t of ['SALE','RENT','STORAGE','BROKERAGE_SALE'])assert.ok(s.includes(t));assert.match(s,/sellerPhone:o\?\.phone/);assert.match(s,/partyPhone:String\(b\.partyPhone\)/);assert.match(app,/معاينة \/ طباعة/);assert.match(app,/رقم هاتف البائع/)});
