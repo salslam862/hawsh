@@ -73,7 +73,7 @@ test('admin home resets navigation history and keeps exit guard below it', async
   assert.match(app, /history\.pushState\(\{view:'admin-home'\}/);
   assert.match(app, /return dashboard\('overview',true\)/);
   const sw = await fs.readFile(new URL('../public/sw-admin-v3.js', import.meta.url), 'utf8');
-  assert.match(sw, /houshak-admin-v12/);
+  assert.match(sw, /houshak-admin-v13/);
 });
 
 
@@ -85,7 +85,7 @@ test('customer preview provides direct return to admin without exit confirmation
   assert.match(app, /function returnToAdminPreview\(\).*location\.replace\('\/admin'\)/);
   assert.match(app, /if\(state\.customerPreview&&!location\.pathname\.startsWith\('\/admin'\)\)\{window\.__returningFromCustomerPreview=true;location\.replace\('\/admin'\);return\}/);
   const clientSw = await fs.readFile(new URL('../public/sw-client-v3.js', import.meta.url), 'utf8');
-  assert.match(clientSw, /houshak-client-v9/);
+  assert.match(clientSw, /houshak-client-v10/);
 });
 
 
@@ -131,3 +131,12 @@ test('password hashes use salted scrypt and verify correctly',()=>{const h=hashP
 test('legacy SHA-256 passwords remain verifiable during migration',async()=>{const {default:crypto}=await import('node:crypto');const legacy=crypto.createHash('sha256').update('legacy-pass').digest('hex');assert.equal(verifyPassword('legacy-pass',legacy),true);assert.equal(isLegacyPasswordHash(legacy),true)});
 test('public asset response excludes internal plate, entry timestamp, and private notes',()=>{const s=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');assert.match(s,/plateNumber:''/);assert.match(s,/locationCode:''/);assert.match(s,/entryAt:null/);assert.match(s,/publicCustomFields\(a\.customFields\|\|\{\}\)/);assert.doesNotMatch(s,/customFields:\{\.\.\.\(a\.customFields\|\|\{\}\)\},category:c/)});
 test('contract forms cover sale rent storage and brokerage with phone snapshots',()=>{const s=readFileSync(new URL('../src/server.js',import.meta.url),'utf8');const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');for(const t of ['SALE','RENT','STORAGE','BROKERAGE_SALE'])assert.ok(s.includes(t));assert.match(s,/sellerPhone:o\?\.phone/);assert.match(s,/partyPhone:String\(b\.partyPhone\)/);assert.match(app,/معاينة \/ طباعة/);assert.match(app,/رقم هاتف البائع/)});
+
+
+test('current bid is recalculated from open valid offers after offer changes', () => {
+  const server = readFileSync(new URL('../src/server.js', import.meta.url), 'utf8');
+  assert.match(server, /function recalculateCurrentBid\(assetId\)/);
+  assert.match(server, /o\.status==='OPEN'/);
+  assert.match(server, /recalculateCurrentBid\(o\.assetId\)/);
+  assert.match(server, /db\.offers\.push\(o\);recalculateCurrentBid\(a\.id\)/);
+});
